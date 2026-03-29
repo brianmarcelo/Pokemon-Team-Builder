@@ -447,27 +447,271 @@
   }
   .iv-row { display: grid; grid-template-columns: 60px 1fr 50px; align-items: center; gap: 10px; margin-bottom: 8px; }
 
+  /* ── AUTH ── */
+  .auth-overlay {
+    position: fixed; inset: 0; z-index: 9000;
+    background: rgba(5,12,25,0.92); backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+  }
+  .auth-box {
+    background: linear-gradient(160deg, #0d1f3c 0%, #0a1628 100%);
+    border: 1px solid rgba(96,165,250,0.3); border-radius: 24px;
+    box-shadow: 0 0 80px rgba(37,99,235,0.2), 0 32px 64px rgba(0,0,0,0.6);
+    width: 100%; max-width: 440px; padding: 40px 36px;
+    animation: authIn 0.35s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes authIn { from { opacity:0; transform:translateY(24px) scale(0.97); } to { opacity:1; transform:none; } }
+  .auth-logo {
+    font-family: 'Rajdhani', sans-serif; font-size: 2rem; font-weight: 700;
+    background: linear-gradient(135deg, #3b82f6, #60a5fa, #fff);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: 3px; text-align: center; margin-bottom: 6px;
+  }
+  .auth-tagline { text-align: center; color: var(--white-dim); font-size: 0.85rem; margin-bottom: 32px; }
+  .auth-divider {
+    display: flex; align-items: center; gap: 12px; margin: 20px 0;
+    color: var(--white-dim); font-size: 0.8rem;
+  }
+  .auth-divider::before, .auth-divider::after {
+    content: ''; flex: 1; height: 1px; background: rgba(96,165,250,0.15);
+  }
+  .btn-oauth {
+    width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 12px 20px; border-radius: 10px; border: 1px solid rgba(96,165,250,0.2);
+    background: rgba(255,255,255,0.05); color: var(--white); cursor: pointer;
+    font-family: 'Exo 2', sans-serif; font-weight: 600; font-size: 0.9rem;
+    transition: all 0.2s; margin-bottom: 10px;
+  }
+  .btn-oauth:hover { background: rgba(255,255,255,0.1); border-color: rgba(96,165,250,0.4); transform: translateY(-1px); }
+  .btn-oauth-google { }
+  .btn-oauth-apple { }
+  .btn-oauth-guest {
+    background: rgba(37,99,235,0.08); border-color: rgba(37,99,235,0.3); color: var(--blue-pale);
+  }
+  .btn-oauth-guest:hover { background: rgba(37,99,235,0.15); }
+  .auth-form-field { margin-bottom: 14px; }
+  .auth-form-field label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--blue-pale); margin-bottom: 5px; letter-spacing: 1px; text-transform: uppercase; }
+  .auth-form-field input {
+    width: 100%; padding: 11px 14px; background: rgba(10,22,40,0.8);
+    border: 1px solid rgba(96,165,250,0.2); border-radius: 8px;
+    color: var(--white); font-family: 'Exo 2', sans-serif; font-size: 0.95rem; outline: none;
+    transition: border-color 0.2s;
+  }
+  .auth-form-field input:focus { border-color: var(--blue-bright); }
+  .btn-auth-submit {
+    width: 100%; padding: 13px; background: var(--gradient-btn); color: #fff;
+    border: none; border-radius: 10px; cursor: pointer; font-family: 'Exo 2', sans-serif;
+    font-weight: 700; font-size: 1rem; letter-spacing: 1px; text-transform: uppercase;
+    transition: all 0.2s; margin-top: 4px; box-shadow: var(--shadow-blue);
+  }
+  .btn-auth-submit:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  .auth-switch { text-align: center; margin-top: 16px; font-size: 0.85rem; color: var(--white-dim); }
+  .auth-switch a { color: var(--blue-glow); cursor: pointer; text-decoration: none; font-weight: 600; }
+  .auth-switch a:hover { text-decoration: underline; }
+  .auth-error { background: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.3); border-radius: 8px; padding: 10px 14px; font-size: 0.85rem; color: #fca5a5; margin-bottom: 14px; display: none; }
+  .auth-success { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); border-radius: 8px; padding: 10px 14px; font-size: 0.85rem; color: #86efac; margin-bottom: 14px; display: none; }
+  /* User pill in header */
+  .user-pill {
+    display: flex; align-items: center; gap: 8px; padding: 6px 12px;
+    background: rgba(37,99,235,0.15); border: 1px solid rgba(96,165,250,0.25);
+    border-radius: 20px; cursor: pointer; transition: all 0.2s; font-size: 0.82rem;
+  }
+  .user-pill:hover { background: rgba(37,99,235,0.25); }
+  .user-avatar {
+    width: 26px; height: 26px; border-radius: 50%; background: var(--gradient-btn);
+    display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;
+  }
+  .user-menu {
+    position: absolute; top: calc(100% + 8px); right: 0; z-index: 200;
+    background: #0d1f3c; border: var(--border-glow); border-radius: var(--radius);
+    box-shadow: var(--shadow-card); min-width: 180px; overflow: hidden;
+  }
+  .user-menu-item {
+    padding: 10px 16px; cursor: pointer; font-size: 0.85rem; transition: background 0.15s;
+    display: flex; align-items: center; gap: 8px; color: var(--white-dim);
+  }
+  .user-menu-item:hover { background: rgba(255,255,255,0.06); color: var(--white); }
+
+  /* ── CHAMPIONS MODE ── */
+  .btn-champions {
+    background: linear-gradient(135deg, #7c3aed, #5b21b6); color: #fff;
+    border: 1px solid rgba(167,139,250,0.4);
+  }
+  .btn-champions:hover { filter: brightness(1.15); transform: translateY(-1px); }
+  .btn-champions.active-champ { box-shadow: 0 0 20px rgba(139,92,246,0.5); border-color: rgba(167,139,250,0.8); }
+  .champ-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: linear-gradient(135deg, #7c3aed, #5b21b6);
+    color: #fff; border-radius: 20px; padding: 3px 10px;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 1px;
+  }
+  .champ-mode-banner {
+    background: linear-gradient(135deg, #1e1040 0%, #130a2e 100%);
+    border: 1px solid rgba(139,92,246,0.4);
+    border-radius: var(--radius); padding: 12px 16px;
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 16px; color: #c4b5fd;
+  }
+  .format-group-label {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--blue-pale); margin-bottom: 5px; margin-top: 10px;
+  }
+  .format-group-label:first-child { margin-top: 0; }
+
+  /* ── META PAGE ── */
+  .meta-header-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
+  }
+  .meta-last-updated {
+    font-size: 0.78rem; color: var(--blue-pale);
+    background: rgba(37,99,235,0.1); padding: 5px 12px; border-radius: 20px;
+    border: 1px solid rgba(96,165,250,0.2);
+  }
+  .meta-tabs { display: flex; gap: 4px; margin-bottom: 20px; flex-wrap: wrap; border-bottom: var(--border-glow); padding-bottom: 0; }
+  .meta-tab {
+    padding: 9px 18px; background: transparent; border: none;
+    color: var(--white-dim); cursor: pointer; font-family: 'Exo 2', sans-serif;
+    font-weight: 600; font-size: 0.82rem; letter-spacing: 1px; text-transform: uppercase;
+    transition: all 0.2s; border-bottom: 2px solid transparent; margin-bottom: -1px;
+  }
+  .meta-tab.active { color: var(--blue-glow); border-bottom-color: var(--blue-bright); }
+  .meta-tab:hover { color: var(--white); }
+  .meta-format-select {
+    display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap;
+  }
+  .meta-format-btn {
+    padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(96,165,250,0.2);
+    background: rgba(255,255,255,0.04); color: var(--white-dim);
+    font-family: 'Exo 2', sans-serif; font-size: 0.78rem; font-weight: 600;
+    cursor: pointer; transition: all 0.15s; text-transform: uppercase; letter-spacing: 1px;
+  }
+  .meta-format-btn.active { background: var(--gradient-btn); color: #fff; border-color: transparent; box-shadow: var(--shadow-blue); }
+  .meta-format-btn:hover:not(.active) { background: rgba(255,255,255,0.08); color: var(--white); }
+  .meta-card {
+    background: var(--gradient-card); border: var(--border-glow);
+    border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px;
+  }
+  .meta-rank-row {
+    display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+    background: rgba(10,22,40,0.4); border-radius: 10px; margin-bottom: 8px;
+    border: 1px solid rgba(96,165,250,0.08); transition: border-color 0.15s;
+  }
+  .meta-rank-row:hover { border-color: rgba(96,165,250,0.2); }
+  .meta-rank-num {
+    font-family: 'Rajdhani', sans-serif; font-size: 1.3rem; font-weight: 700;
+    color: var(--blue-pale); width: 28px; text-align: center; flex-shrink: 0;
+  }
+  .meta-rank-num.gold { color: #fbbf24; }
+  .meta-rank-num.silver { color: #94a3b8; }
+  .meta-rank-num.bronze { color: #d97706; }
+  .meta-usage-bar { height: 5px; background: rgba(255,255,255,0.08); border-radius: 3px; margin-top: 4px; overflow: hidden; }
+  .meta-usage-fill { height: 100%; border-radius: 3px; background: var(--gradient-btn); transition: width 0.6s ease; }
+  .meta-strategy-card {
+    background: rgba(10,22,40,0.5); border: 1px solid rgba(96,165,250,0.12);
+    border-radius: var(--radius); padding: 16px; margin-bottom: 12px;
+  }
+  .meta-strategy-title { font-weight: 700; font-size: 1rem; margin-bottom: 6px; color: var(--blue-glow); }
+  .meta-strategy-body { font-size: 0.85rem; color: var(--white-dim); line-height: 1.7; }
+  .meta-update-panel {
+    background: rgba(37,99,235,0.06); border: 1px solid rgba(37,99,235,0.2);
+    border-radius: var(--radius); padding: 16px; margin-bottom: 20px;
+  }
+  .meta-source-tag {
+    display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem;
+    font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    background: rgba(96,165,250,0.15); color: var(--blue-pale); margin-left: 8px;
+  }
+
   @media (max-width: 900px) {
     .team-grid-3, .team-grid-6 { grid-template-columns: 1fr 1fr; }
     .type-grid { grid-template-columns: repeat(6, 1fr); }
     .two-col, .analysis-grid { grid-template-columns: 1fr; }
+    .auth-box { padding: 28px 20px; }
   }
   @media (max-width: 600px) {
     .team-grid-3, .team-grid-6 { grid-template-columns: 1fr; }
-    nav button { font-size: 0.75rem; padding: 6px 10px; }
+    nav button { font-size: 0.72rem; padding: 6px 8px; }
     .moves-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 
+<!-- AUTH OVERLAY -->
+<div class="auth-overlay" id="auth-overlay">
+  <div class="auth-box">
+    <div class="auth-logo">⚡ PokeForge</div>
+    <div class="auth-tagline">Your competitive team builder — sign in to sync teams across devices</div>
+
+    <!-- View: Sign In -->
+    <div id="auth-view-signin">
+      <div class="auth-error" id="auth-error-signin"></div>
+      <button class="btn-oauth btn-oauth-google" onclick="authGoogle()">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Continue with Google
+      </button>
+      <button class="btn-oauth btn-oauth-apple" onclick="authApple()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        Continue with Apple
+      </button>
+      <div class="auth-divider">or sign in with email</div>
+      <div class="auth-form-field">
+        <label>Email</label>
+        <input type="email" id="signin-email" placeholder="trainer@example.com" autocomplete="email">
+      </div>
+      <div class="auth-form-field">
+        <label>Password</label>
+        <input type="password" id="signin-password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <button class="btn-auth-submit" onclick="authEmailSignIn()">Sign In</button>
+      <div class="auth-divider">or</div>
+      <button class="btn-oauth btn-oauth-guest" onclick="authGuest()">
+        👤 Continue as Guest
+        <span style="font-size:0.7rem; opacity:0.7; margin-left:4px;">(teams saved locally)</span>
+      </button>
+      <div class="auth-switch">No account? <a onclick="showAuthView('signup')">Create one</a> · <a onclick="showAuthView('forgot')">Forgot password?</a></div>
+    </div>
+
+    <!-- View: Sign Up -->
+    <div id="auth-view-signup" style="display:none;">
+      <div class="auth-error" id="auth-error-signup"></div>
+      <div class="auth-success" id="auth-success-signup"></div>
+      <button class="btn-oauth btn-oauth-google" onclick="authGoogle()">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Sign up with Google
+      </button>
+      <div class="auth-divider">or create an account</div>
+      <div class="auth-form-field"><label>Display Name</label><input type="text" id="signup-name" placeholder="TrainerRed" autocomplete="nickname"></div>
+      <div class="auth-form-field"><label>Email</label><input type="email" id="signup-email" placeholder="trainer@example.com" autocomplete="email"></div>
+      <div class="auth-form-field"><label>Password</label><input type="password" id="signup-password" placeholder="8+ characters" autocomplete="new-password"></div>
+      <button class="btn-auth-submit" onclick="authEmailSignUp()">Create Account</button>
+      <div class="auth-switch">Already have an account? <a onclick="showAuthView('signin')">Sign in</a></div>
+    </div>
+
+    <!-- View: Forgot Password -->
+    <div id="auth-view-forgot" style="display:none;">
+      <div class="auth-success" id="auth-success-forgot"></div>
+      <div class="auth-error" id="auth-error-forgot"></div>
+      <p style="color:var(--white-dim); font-size:0.88rem; margin-bottom:16px; line-height:1.6;">Enter your email and we'll send a password reset link.</p>
+      <div class="auth-form-field"><label>Email</label><input type="email" id="forgot-email" placeholder="trainer@example.com"></div>
+      <button class="btn-auth-submit" onclick="authForgot()">Send Reset Link</button>
+      <div class="auth-switch"><a onclick="showAuthView('signin')">← Back to Sign In</a></div>
+    </div>
+  </div>
+</div>
+
 <header>
   <div class="logo">⚡ Poke<span>Forge</span></div>
   <nav>
     <button class="active" onclick="showPage('builder')">Team Builder</button>
     <button onclick="showPage('analysis')">Analysis</button>
+    <button onclick="showPage('meta')">Meta</button>
     <button onclick="showPage('pokedex')">Pokédex</button>
   </nav>
+  <div style="position:relative;" id="user-area">
+    <!-- Injected by JS after auth -->
+  </div>
 </header>
 
 <main>
@@ -482,10 +726,20 @@
           <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap;">
             <div>
               <div class="form-label">Format</div>
+              <div class="format-group-label">⚡ Champions</div>
+              <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:6px;">
+                <button class="btn btn-champions btn-sm" id="btn-champ-6v6" onclick="setChampionsFormat(6)">6v6 Champions</button>
+                <button class="btn btn-champions btn-sm" id="btn-champ-3v3" onclick="setChampionsFormat(3)">3v3 Champions</button>
+                <button class="btn btn-champions btn-sm" id="btn-champ-4v4" onclick="setChampionsFormat(4)">4v4 Champions</button>
+              </div>
+              <div class="format-group-label">🏛 Classic (Gen 9)</div>
+              <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:6px;">
+                <button class="btn btn-primary btn-sm" id="btn-6v6" onclick="setFormat(6)">6v6 Classic</button>
+                <button class="btn btn-ghost btn-sm" id="btn-3v3" onclick="setFormat(3)">3v3 Classic</button>
+                <button class="btn btn-ghost btn-sm" id="btn-4v4" onclick="setFormat(4)">4v4 Classic</button>
+              </div>
+              <div class="format-group-label">🟢 Pokémon GO</div>
               <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                <button class="btn btn-primary btn-sm" id="btn-6v6" onclick="setFormat(6)">6v6</button>
-                <button class="btn btn-ghost btn-sm" id="btn-3v3" onclick="setFormat(3)">3v3</button>
-                <button class="btn btn-ghost btn-sm" id="btn-4v4" onclick="setFormat(4)">4v4</button>
                 <button class="btn btn-go btn-sm" id="btn-go" onclick="setGoFormat()" style="border:1px solid rgba(74,222,128,0.4);">🟢 GO 3v3</button>
               </div>
             </div>
@@ -536,6 +790,16 @@
             </div>
           </div>
 
+          <!-- CHAMPIONS MODE BANNER (hidden by default) -->
+          <div id="champ-mode-banner" class="champ-mode-banner" style="display:none;">
+            <span style="font-size:1.3rem;">⚡</span>
+            <div style="flex:1;">
+              <div style="font-weight:700; margin-bottom:4px;">Pokémon Champions Mode Active</div>
+              <div style="font-size:0.8rem; opacity:0.85;" id="champ-banner-desc">Pokémon Champions ruleset. Edit Champions-specific rules and meta changes below.</div>
+            </div>
+            <button class="btn btn-ghost btn-sm" onclick="openChampionsRulesModal()" style="border-color:rgba(139,92,246,0.4); color:#c4b5fd;">⚙ Rules</button>
+          </div>
+
           <div id="team-summary" class="team-summary" style="display:none;"></div>
         </div>
 
@@ -581,7 +845,10 @@
         </div>
         <div id="team-overview-stats"></div>
         <div style="margin-top:16px;">
-          <div class="form-label" style="margin-bottom:8px;">Saved Teams</div>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <div class="form-label" style="margin:0;">Saved Teams</div>
+            <span id="save-location-tag" style="font-size:0.68rem; color:var(--blue-pale); background:rgba(96,165,250,0.1); border:1px solid rgba(96,165,250,0.2); border-radius:4px; padding:2px 7px; font-weight:600;">💾 Saved locally to device</span>
+          </div>
           <div id="saved-teams-list" style="display:flex; flex-direction:column; gap:6px;"></div>
           <button class="btn btn-ghost btn-sm" style="margin-top:8px; width:100%;" onclick="saveCurrentTeam()">💾 Save Current Team</button>
         </div>
@@ -626,7 +893,140 @@
     </div>
   </div>
 
-  <!-- POKEDEX PAGE -->
+  <!-- META PAGE -->
+  <div id="page-meta" class="page">
+    <div class="meta-header-bar">
+      <div class="section-title" style="margin-bottom:0;">Competitive Meta</div>
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+        <span class="meta-last-updated" id="meta-last-updated">Last updated: —</span>
+        <button class="btn btn-primary btn-sm" onclick="openMetaUpdatePanel()">🔄 Update Meta</button>
+      </div>
+    </div>
+
+    <!-- Format selector -->
+    <div class="meta-format-select" id="meta-format-select">
+      <button class="meta-format-btn active" onclick="setMetaFormat('vgc')">VGC / Gen 9</button>
+      <button class="meta-format-btn" onclick="setMetaFormat('champ6')">Champions 6v6</button>
+      <button class="meta-format-btn" onclick="setMetaFormat('champ3')">Champions 3v3</button>
+      <button class="meta-format-btn" onclick="setMetaFormat('champ4')">Champions 4v4</button>
+      <button class="meta-format-btn" onclick="setMetaFormat('go-great')">GO Great</button>
+      <button class="meta-format-btn" onclick="setMetaFormat('go-ultra')">GO Ultra</button>
+      <button class="meta-format-btn" onclick="setMetaFormat('go-master')">GO Master</button>
+    </div>
+
+    <!-- Meta sub-tabs -->
+    <div class="meta-tabs">
+      <button class="meta-tab active" onclick="showMetaTab('usage')">📊 Usage Rankings</button>
+      <button class="meta-tab" onclick="showMetaTab('teams')">🏆 Top Teams</button>
+      <button class="meta-tab" onclick="showMetaTab('strategies')">🧠 Strategies</button>
+      <button class="meta-tab" onclick="showMetaTab('threats')">⚠️ Threats</button>
+      <button class="meta-tab" onclick="showMetaTab('manage')">⚙️ Manage Data</button>
+    </div>
+
+    <div id="meta-tab-usage" class="meta-tab-content">
+      <div class="two-col">
+        <div>
+          <div class="meta-card">
+            <div style="font-size:0.85rem; font-weight:700; color:var(--blue-pale); text-transform:uppercase; letter-spacing:1px; margin-bottom:14px;">Top Pokémon by Usage</div>
+            <div id="meta-usage-list"></div>
+          </div>
+        </div>
+        <div>
+          <div class="meta-card">
+            <div style="font-size:0.85rem; font-weight:700; color:var(--blue-pale); text-transform:uppercase; letter-spacing:1px; margin-bottom:14px;">Top Items</div>
+            <div id="meta-items-list"></div>
+          </div>
+          <div class="meta-card" style="margin-top:16px;">
+            <div style="font-size:0.85rem; font-weight:700; color:var(--blue-pale); text-transform:uppercase; letter-spacing:1px; margin-bottom:14px;">Top Moves</div>
+            <div id="meta-moves-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="meta-tab-teams" class="meta-tab-content" style="display:none;">
+      <div id="meta-teams-list"></div>
+    </div>
+
+    <div id="meta-tab-strategies" class="meta-tab-content" style="display:none;">
+      <div id="meta-strategies-list"></div>
+    </div>
+
+    <div id="meta-tab-threats" class="meta-tab-content" style="display:none;">
+      <div id="meta-threats-list"></div>
+    </div>
+
+    <div id="meta-tab-manage" class="meta-tab-content" style="display:none;">
+      <div class="meta-update-panel">
+        <div style="font-size:0.9rem; font-weight:700; margin-bottom:12px; color:var(--blue-glow);">⚙️ Meta Data Management</div>
+        <div style="font-size:0.85rem; color:var(--white-dim); margin-bottom:16px; line-height:1.7;">
+          Meta data is curated manually or via scheduled updates. Paste JSON data from competitive sources (Smogon, Limitless, PvPoke) or use the manual entry fields below. Data is stored locally and syncs to your account when signed in.
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px;">
+          <div>
+            <div class="form-label" style="margin-bottom:6px;">Source URL (optional)</div>
+            <input class="form-input" id="meta-source-url" placeholder="https://smogon.com/stats/..." style="width:100%;">
+          </div>
+          <div>
+            <div class="form-label" style="margin-bottom:6px;">Format</div>
+            <select class="form-select" id="meta-import-format">
+              <option value="vgc">VGC / Gen 9</option>
+              <option value="champ6">Champions 6v6</option>
+              <option value="champ3">Champions 3v3</option>
+              <option value="champ4">Champions 4v4</option>
+              <option value="go-great">GO Great League</option>
+              <option value="go-ultra">GO Ultra League</option>
+              <option value="go-master">GO Master League</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-label" style="margin-bottom:6px;">Paste Meta JSON or manually add entries below</div>
+        <textarea id="meta-json-input" style="width:100%; height:120px; background:rgba(10,22,40,0.8); border:1px solid rgba(96,165,250,0.2); border-radius:8px; color:var(--white); font-family:monospace; font-size:0.82rem; padding:10px; outline:none; resize:vertical;" placeholder='{"usage":[{"name":"Garchomp","usage":28.4},...],"teams":[...]}'></textarea>
+        <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;">
+          <button class="btn btn-primary btn-sm" onclick="importMetaJSON()">📥 Import JSON</button>
+          <button class="btn btn-ghost btn-sm" onclick="openQuickAddMeta()">➕ Quick Add Pokémon</button>
+          <button class="btn btn-ghost btn-sm" onclick="exportMetaJSON()">📤 Export Current</button>
+          <button class="btn btn-danger btn-sm" onclick="clearMetaData()">🗑 Clear Format Data</button>
+        </div>
+      </div>
+
+      <!-- Quick add form -->
+      <div id="quick-add-meta-form" style="display:none;" class="meta-card">
+        <div style="font-weight:700; margin-bottom:14px; color:var(--blue-glow);">Quick Add Pokémon to Usage Rankings</div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr auto; gap:10px; align-items:flex-end;">
+          <div>
+            <div class="form-label" style="margin-bottom:4px;">Pokémon Name</div>
+            <input class="form-input" id="qa-name" placeholder="Garchomp">
+          </div>
+          <div>
+            <div class="form-label" style="margin-bottom:4px;">Usage %</div>
+            <input class="form-input" id="qa-usage" type="number" placeholder="25.4" min="0" max="100" step="0.1">
+          </div>
+          <div>
+            <div class="form-label" style="margin-bottom:4px;">Role / Note</div>
+            <input class="form-input" id="qa-role" placeholder="Physical sweeper">
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="quickAddMetaPokemon()" style="margin-bottom:2px;">Add</button>
+        </div>
+      </div>
+
+      <!-- Auto-update timer -->
+      <div class="meta-card" style="margin-top:16px;">
+        <div style="font-weight:700; margin-bottom:10px; color:var(--blue-glow);">🕐 Auto-Update Schedule</div>
+        <div style="font-size:0.85rem; color:var(--white-dim); margin-bottom:12px;">When signed in, PokeForge can remind you to update meta data on a schedule.</div>
+        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+          <select class="form-select" id="meta-update-frequency" style="width:auto;">
+            <option value="manual">Manual only</option>
+            <option value="weekly" selected>Weekly reminder</option>
+            <option value="biweekly">Every 2 weeks</option>
+            <option value="monthly">Monthly reminder</option>
+          </select>
+          <button class="btn btn-ghost btn-sm" onclick="saveMetaSchedule()">Save Schedule</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="page-pokedex" class="page">
     <div class="section-title">Pokédex Browser</div>
     <div class="card" style="margin-bottom:16px;">
@@ -763,6 +1163,56 @@
 </div>
 
 <!-- IMAGE UPLOAD (hidden) -->
+<!-- CHAMPIONS RULES MODAL -->
+<div class="modal-overlay hidden" id="champ-rules-modal">
+  <div class="modal" style="max-width:640px;">
+    <div class="modal-header">
+      <div class="modal-title" style="color:#c4b5fd;">⚡ Champions Mode Rules — <span id="champ-rules-format-label">6v6</span></div>
+      <button class="close-btn" onclick="document.getElementById('champ-rules-modal').classList.add('hidden')">✕</button>
+    </div>
+    <div class="alert" style="background:rgba(139,92,246,0.1); border:1px solid rgba(139,92,246,0.3); color:#c4b5fd; margin-bottom:20px;">
+      <span>⚡</span><span>Champions rules represent Pokémon Champions gameplay changes. Update these as new patches drop to keep the meta accurate.</span>
+    </div>
+    <div class="tabs" style="margin-bottom:16px;">
+      <button class="tab active" onclick="showChampTab('ruleset')">Ruleset</button>
+      <button class="tab" onclick="showChampTab('banned')">Banned / Restricted</button>
+      <button class="tab" onclick="showChampTab('buffs')">Buffs & Nerfs</button>
+      <button class="tab" onclick="showChampTab('newmeta')">New Mechanics</button>
+    </div>
+    <div id="champ-tab-ruleset">
+      <div class="form-group"><label class="form-label">Team Size</label><select class="form-select" id="champ-rule-teamsize"><option value="3">3</option><option value="4">4</option><option value="6" selected>6</option></select></div>
+      <div class="form-group"><label class="form-label">Level Cap</label><input class="form-input" id="champ-rule-levelcap" type="number" value="100" min="1" max="100"></div>
+      <div class="form-group"><label class="form-label">Terastallization</label><select class="form-select" id="champ-rule-dmax"><option value="none">Not allowed</option><option value="tera" selected>Allowed</option></select></div>
+      <div class="form-group"><label class="form-label">Duplicate Clause</label><select class="form-select" id="champ-rule-dupes"><option value="on" selected>On — no duplicate species</option><option value="off">Off</option></select></div>
+      <div class="form-group"><label class="form-label">Item Clause</label><select class="form-select" id="champ-rule-items"><option value="on" selected>On — no duplicate items</option><option value="off">Off</option></select></div>
+      <div class="form-group"><label class="form-label">Additional Notes</label><textarea class="form-input" id="champ-rule-notes" style="height:80px;resize:vertical;" placeholder="Any extra ruleset notes..."></textarea></div>
+    </div>
+    <div id="champ-tab-banned" style="display:none;">
+      <div class="form-group"><label class="form-label">Banned / Restricted Pokémon (one per line)</label><textarea class="form-input" id="champ-banned-pokemon" style="height:130px;resize:vertical;font-family:monospace;font-size:0.85rem;" placeholder="Mewtwo&#10;Rayquaza&#10;Zacian"></textarea></div>
+      <div class="form-group"><label class="form-label">Banned Items</label><textarea class="form-input" id="champ-banned-items" style="height:70px;resize:vertical;font-family:monospace;font-size:0.85rem;" placeholder="Soul-Dew"></textarea></div>
+      <div class="form-group"><label class="form-label">Banned Moves</label><textarea class="form-input" id="champ-banned-moves" style="height:70px;resize:vertical;font-family:monospace;font-size:0.85rem;" placeholder="Double-Team&#10;Minimize"></textarea></div>
+    </div>
+    <div id="champ-tab-buffs" style="display:none;">
+      <div class="alert alert-info" style="margin-bottom:12px;"><span>💡</span><span>Record stat, type, or move power changes from Champions patches.</span></div>
+      <div id="champ-buffs-list" style="margin-bottom:12px;"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;align-items:flex-end;">
+        <div><div class="form-label" style="margin-bottom:4px;">Pokémon / Move</div><input class="form-input" id="buff-name" placeholder="Garchomp"></div>
+        <div><div class="form-label" style="margin-bottom:4px;">Change Type</div><select class="form-select" id="buff-type"><option>Stat Buff</option><option>Stat Nerf</option><option>Type Change</option><option>Move Change</option><option>New Move</option><option>Ability Change</option></select></div>
+        <div><div class="form-label" style="margin-bottom:4px;">Description</div><input class="form-input" id="buff-desc" placeholder="Speed +10"></div>
+        <button class="btn btn-primary btn-sm" onclick="addChampBuff()">Add</button>
+      </div>
+    </div>
+    <div id="champ-tab-newmeta" style="display:none;">
+      <div class="form-group"><label class="form-label">New Mechanics / Features in Champions</label><textarea class="form-input" id="champ-new-mechanics" style="height:150px;resize:vertical;" placeholder="Describe new battle mechanics, systems, or game modes unique to Pokémon Champions..."></textarea></div>
+      <div class="form-group"><label class="form-label">Patch Version / Date</label><input class="form-input" id="champ-patch-version" placeholder="e.g. v1.2.0 — April 2026"></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
+      <button class="btn btn-ghost" onclick="document.getElementById('champ-rules-modal').classList.add('hidden')">Cancel</button>
+      <button class="btn btn-champions" onclick="saveChampRules()">Save Rules</button>
+    </div>
+  </div>
+</div>
+
 <input type="file" id="img-upload" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
 
 <script>
@@ -1005,14 +1455,16 @@ function initTeam(format) {
   while (currentTeam.length < format) currentTeam.push(createEmptySlot());
   while (currentTeam.length > format) currentTeam.pop();
   
-  // Update format buttons
+  // Update Classic format buttons
   ['3','4','6'].forEach(f => {
     const btn = document.getElementById(`btn-${f}v${f}`);
     if (btn) btn.className = parseInt(f) === format ? 'btn btn-primary btn-sm' : 'btn btn-ghost btn-sm';
+    // Reset Champions buttons too
+    const cBtn = document.getElementById(`btn-champ-${f}v${f}`);
+    if (cBtn) cBtn.className = 'btn btn-champions btn-sm';
   });
   const goBtn = document.getElementById('btn-go');
   if (goBtn) { goBtn.style.boxShadow = ''; goBtn.style.border = '1px solid rgba(74,222,128,0.4)'; }
-  // Update slot select
   updateSlotSelect();
   renderTeamSlots();
   renderTeamSummary();
@@ -1020,6 +1472,7 @@ function initTeam(format) {
 
 function setFormat(n) {
   exitGoMode();
+  exitChampionsMode();
   if (currentTeam.some(s => s.pokemon) && !confirm(`Switch to ${n}v${n}? Extra Pokémon may be removed.`)) return;
   initTeam(n);
 }
@@ -1852,12 +2305,13 @@ function showDexModal(pokemonId) {
 
 function showPage(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(`page-${page}`).classList.add('active');
+  document.getElementById(`page-${page}`)?.classList.add('active');
   document.querySelectorAll('nav button').forEach((btn, i) => {
-    btn.classList.toggle('active', ['builder','analysis','pokedex'][i] === page);
+    btn.classList.toggle('active', ['builder','analysis','meta','pokedex'][i] === page);
   });
   if (page === 'analysis') showAnalysisTab('weaknesses');
   if (page === 'pokedex') renderDex();
+  if (page === 'meta') { try { renderCurrentMetaTab(); } catch(e){} }
 }
 
 // ============================================================
@@ -2174,6 +2628,7 @@ function mainStatsToGoStats(stats) {
 
 function setGoFormat() {
   if (currentTeam.some(s => s.pokemon) && !confirm('Switch to Pokémon GO 3v3 mode? Team will be reset to 3 slots.')) return;
+  exitChampionsMode();
   isGoMode = true;
   currentFormat = 3;
   currentTeam = [createEmptySlot(), createEmptySlot(), createEmptySlot()];
@@ -2188,11 +2643,13 @@ function setGoFormat() {
   ['3','4','6'].forEach(f => {
     const btn = document.getElementById(`btn-${f}v${f}`);
     if (btn) btn.className = 'btn btn-ghost btn-sm';
+    const cBtn = document.getElementById(`btn-champ-${f}v${f}`);
+    if (cBtn) cBtn.className = 'btn btn-champions btn-sm';
   });
   document.getElementById('btn-go').style.boxShadow = '0 0 16px rgba(74,222,128,0.5)';
   document.getElementById('btn-go').style.border = '1px solid rgba(74,222,128,0.8)';
 
-  // Hide gen filter (GO has its own filter)
+  // Hide gen filter
   document.getElementById('gen-filter').style.display = 'none';
   
   updateSlotSelect();
@@ -2218,17 +2675,6 @@ function setGoLeague(league) {
     document.getElementById(`league-${l}`)?.classList.toggle('active', l === league);
   });
   renderTeamSlots();
-}
-
-function exitGoMode() {
-  isGoMode = false;
-  document.getElementById('go-mode-banner').style.display = 'none';
-  document.getElementById('go-league-selector').style.display = 'none';
-  document.getElementById('go-search-notice').style.display = 'none';
-  document.getElementById('main-alert-info').style.display = 'flex';
-  document.getElementById('gen-filter').style.display = '';
-  document.getElementById('btn-go').style.boxShadow = '';
-  document.getElementById('btn-go').style.border = '1px solid rgba(74,222,128,0.4)';
 }
 
 function renderGoSlot(slot, i, el) {
@@ -2685,7 +3131,1044 @@ function renderGoStatsNote() {
 }
 
 
-// Init on load — embedded data loads instantly, no async needed
+// ============================================================
+// AUTH SYSTEM
+// ============================================================
+// NOTE FOR DEPLOYMENT:
+// Replace authGoogle() / authApple() with real Firebase/Supabase/Auth0 SDK calls.
+// Replace authEmailSignIn/Up() with your backend endpoint.
+// The currentUser object drives all session-aware behavior.
+
+let currentUser = null; // null = guest
+
+const AUTH_KEY = 'pokeforge_user';
+
+function showAuthView(view) {
+  ['signin','signup','forgot'].forEach(v => {
+    document.getElementById(`auth-view-${v}`).style.display = v === view ? 'block' : 'none';
+  });
+}
+
+function showAuthError(view, msg) {
+  const el = document.getElementById(`auth-error-${view}`);
+  if (!el) return;
+  el.textContent = msg; el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 5000);
+}
+function showAuthSuccessMsg(view, msg) {
+  const el = document.getElementById(`auth-success-${view}`);
+  if (!el) return;
+  el.textContent = msg; el.style.display = 'block';
+}
+
+function authEmailSignIn() {
+  const email = document.getElementById('signin-email').value.trim();
+  const pass = document.getElementById('signin-password').value;
+  if (!email || !pass) { showAuthError('signin', 'Please enter your email and password.'); return; }
+  // ── REPLACE WITH REAL AUTH ──
+  // e.g. firebase.auth().signInWithEmailAndPassword(email, pass).then(setUser).catch(...)
+  // Demo: accept any credentials
+  console.warn('Auth: using demo mode — connect a real auth provider for production.');
+  setUser({ uid: 'demo_'+Date.now(), email, displayName: email.split('@')[0], provider: 'email' });
+}
+
+function authEmailSignUp() {
+  const name = document.getElementById('signup-name').value.trim();
+  const email = document.getElementById('signup-email').value.trim();
+  const pass = document.getElementById('signup-password').value;
+  if (!name || !email || !pass) { showAuthError('signup', 'Please fill in all fields.'); return; }
+  if (pass.length < 8) { showAuthError('signup', 'Password must be at least 8 characters.'); return; }
+  // ── REPLACE WITH REAL AUTH ──
+  console.warn('Auth: using demo mode — connect a real auth provider for production.');
+  showAuthSuccessMsg('signup', `Account created for ${email}! Signing you in…`);
+  setTimeout(() => setUser({ uid: 'demo_'+Date.now(), email, displayName: name, provider: 'email' }), 1000);
+}
+
+function authGoogle() {
+  // ── REPLACE WITH REAL GOOGLE OAUTH ──
+  // e.g. firebase: firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider())
+  // e.g. Supabase: supabase.auth.signInWithOAuth({ provider: 'google' })
+  alert('Google Sign-In: Connect your Firebase / Supabase project.\n\nIn production, replace authGoogle() with your OAuth provider call.\n\nSee the Setup Guide section in the Manage tab for details.');
+}
+
+function authApple() {
+  // ── REPLACE WITH REAL APPLE OAUTH ──
+  alert('Apple Sign-In: Connect your Firebase / Supabase project.\n\nIn production, replace authApple() with your OAuth provider call.');
+}
+
+function authGuest() {
+  setUser(null); // null = guest, no cloud sync
+}
+
+function authForgot() {
+  const email = document.getElementById('forgot-email').value.trim();
+  if (!email) { showAuthError('forgot', 'Please enter your email.'); return; }
+  // ── REPLACE WITH REAL RESET ──
+  showAuthSuccessMsg('forgot', `If ${email} has an account, a reset link has been sent.`);
+}
+
+function setUser(user) {
+  currentUser = user;
+  if (user) localStorage.setItem(AUTH_KEY, JSON.stringify(user));
+  else localStorage.removeItem(AUTH_KEY);
+  document.getElementById('auth-overlay').style.display = 'none';
+  renderUserArea();
+  updateSaveLocationTag();
+}
+
+function signOut() {
+  currentUser = null;
+  localStorage.removeItem(AUTH_KEY);
+  renderUserArea();
+  updateSaveLocationTag();
+  document.getElementById('auth-overlay').style.display = 'flex';
+  showAuthView('signin');
+}
+
+function renderUserArea() {
+  const area = document.getElementById('user-area');
+  if (!currentUser) {
+    area.innerHTML = `<button class="btn btn-ghost btn-sm" onclick="document.getElementById('auth-overlay').style.display='flex'">Sign In</button>`;
+    return;
+  }
+  const initials = (currentUser.displayName||currentUser.email||'?').slice(0,2).toUpperCase();
+  area.innerHTML = `
+    <div class="user-pill" onclick="toggleUserMenu()">
+      <div class="user-avatar">${initials}</div>
+      <span>${currentUser.displayName || currentUser.email}</span>
+      <span style="font-size:0.7rem; opacity:0.6;">▾</span>
+    </div>
+    <div class="user-menu" id="user-menu" style="display:none;">
+      <div class="user-menu-item" style="padding:12px 16px; border-bottom:var(--border-glow); color:var(--blue-pale); font-size:0.8rem;">
+        <div>${currentUser.displayName || 'Trainer'}</div>
+        <div style="font-size:0.72rem; opacity:0.7;">${currentUser.email || 'Guest'}</div>
+      </div>
+      <div class="user-menu-item" onclick="showPage('builder')">🏠 My Teams</div>
+      <div class="user-menu-item" onclick="alert('Cloud sync coming — connect your backend to enable.')">☁️ Sync Teams</div>
+      <div class="user-menu-item" onclick="signOut()" style="color:#f87171;">🚪 Sign Out</div>
+    </div>
+  `;
+}
+
+function toggleUserMenu() {
+  const m = document.getElementById('user-menu');
+  if (m) m.style.display = m.style.display === 'none' ? 'block' : 'none';
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('#user-area')) {
+    const m = document.getElementById('user-menu');
+    if (m) m.style.display = 'none';
+  }
+});
+
+function updateSaveLocationTag() {
+  const tag = document.getElementById('save-location-tag');
+  if (!tag) return;
+  if (currentUser) {
+    tag.textContent = '☁️ Synced to account';
+    tag.style.color = '#86efac';
+    tag.style.background = 'rgba(34,197,94,0.1)';
+    tag.style.borderColor = 'rgba(34,197,94,0.25)';
+  } else {
+    tag.textContent = '💾 Saved locally to device';
+    tag.style.color = 'var(--blue-pale)';
+    tag.style.background = 'rgba(96,165,250,0.1)';
+    tag.style.borderColor = 'rgba(96,165,250,0.2)';
+  }
+}
+
+// Check for existing session on load
+(function restoreSession() {
+  try {
+    const saved = localStorage.getItem(AUTH_KEY);
+    if (saved) {
+      currentUser = JSON.parse(saved);
+      document.getElementById('auth-overlay').style.display = 'none';
+      renderUserArea();
+      updateSaveLocationTag();
+    }
+  } catch(e) {}
+})();
+
+// ============================================================
+// CHAMPIONS MODE
+// ============================================================
+
+let isChampionsMode = false;
+let championsFormat = 6;
+const CHAMP_RULES_KEY = 'pokeforge_champ_rules';
+
+let champRulesData = {}; // keyed by format (3/4/6)
+try { champRulesData = JSON.parse(localStorage.getItem(CHAMP_RULES_KEY) || '{}'); } catch(e) {}
+
+function setChampionsFormat(n) {
+  if (currentTeam.some(s => s.pokemon) && !confirm(`Switch to ${n}v${n} Champions? Team will be reset.`)) return;
+  exitGoMode();
+  isChampionsMode = true;
+  championsFormat = n;
+  currentFormat = n;
+  currentTeam = Array.from({length: n}, createEmptySlot);
+
+  // Update button states
+  ['3','4','6'].forEach(f => {
+    const b1 = document.getElementById(`btn-${f}v${f}`);
+    const b2 = document.getElementById(`btn-champ-${f}v${f}`);
+    if (b1) b1.className = 'btn btn-ghost btn-sm';
+    if (b2) b2.className = parseInt(f) === n ? 'btn btn-champions btn-sm active-champ' : 'btn btn-champions btn-sm';
+  });
+
+  document.getElementById('champ-mode-banner').style.display = 'flex';
+  document.getElementById('champ-banner-desc').textContent =
+    `Pokémon Champions ${n}v${n} ruleset active. Click Rules to view/edit Champions-specific changes.`;
+  document.getElementById('main-alert-info').style.display = 'none';
+
+  updateSlotSelect();
+  renderTeamSlots();
+  renderTeamSummary();
+}
+
+function exitChampionsMode() {
+  if (!isChampionsMode) return;
+  isChampionsMode = false;
+  document.getElementById('champ-mode-banner').style.display = 'none';
+  document.getElementById('main-alert-info').style.display = 'flex';
+  ['3','4','6'].forEach(f => {
+    const b = document.getElementById(`btn-champ-${f}v${f}`);
+    if (b) b.className = 'btn btn-champions btn-sm';
+  });
+}
+
+// setFormat already calls exitChampionsMode() — no patch needed
+
+function openChampionsRulesModal() {
+  document.getElementById('champ-rules-format-label').textContent = `${championsFormat}v${championsFormat}`;
+  const rules = champRulesData[championsFormat] || {};
+  document.getElementById('champ-rule-teamsize').value = rules.teamsize || championsFormat;
+  document.getElementById('champ-rule-levelcap').value = rules.levelcap || 100;
+  document.getElementById('champ-rule-dmax').value = rules.dmax || 'tera';
+  document.getElementById('champ-rule-dupes').value = rules.dupes || 'on';
+  document.getElementById('champ-rule-items').value = rules.items || 'on';
+  document.getElementById('champ-rule-notes').value = rules.notes || '';
+  document.getElementById('champ-banned-pokemon').value = (rules.bannedPokemon||[]).join('\n');
+  document.getElementById('champ-banned-items').value = (rules.bannedItems||[]).join('\n');
+  document.getElementById('champ-banned-moves').value = (rules.bannedMoves||[]).join('\n');
+  document.getElementById('champ-new-mechanics').value = rules.newMechanics || '';
+  document.getElementById('champ-patch-version').value = rules.patchVersion || '';
+  renderChampBuffsList();
+  showChampTab('ruleset');
+  document.getElementById('champ-rules-modal').classList.remove('hidden');
+}
+
+function showChampTab(tab) {
+  ['ruleset','banned','buffs','newmeta'].forEach(t => {
+    document.getElementById(`champ-tab-${t}`).style.display = t === tab ? 'block' : 'none';
+  });
+  document.querySelectorAll('#champ-rules-modal .tab').forEach((btn, i) => {
+    btn.classList.toggle('active', ['ruleset','banned','buffs','newmeta'][i] === tab);
+  });
+}
+
+function saveChampRules() {
+  const rules = {
+    teamsize: document.getElementById('champ-rule-teamsize').value,
+    levelcap: document.getElementById('champ-rule-levelcap').value,
+    dmax: document.getElementById('champ-rule-dmax').value,
+    dupes: document.getElementById('champ-rule-dupes').value,
+    items: document.getElementById('champ-rule-items').value,
+    notes: document.getElementById('champ-rule-notes').value,
+    bannedPokemon: document.getElementById('champ-banned-pokemon').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    bannedItems: document.getElementById('champ-banned-items').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    bannedMoves: document.getElementById('champ-banned-moves').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    newMechanics: document.getElementById('champ-new-mechanics').value,
+    patchVersion: document.getElementById('champ-patch-version').value,
+    buffs: champRulesData[championsFormat]?.buffs || []
+  };
+  champRulesData[championsFormat] = rules;
+  localStorage.setItem(CHAMP_RULES_KEY, JSON.stringify(champRulesData));
+  document.getElementById('champ-rules-modal').classList.add('hidden');
+}
+
+function renderChampBuffsList() {
+  const buffs = champRulesData[championsFormat]?.buffs || [];
+  const el = document.getElementById('champ-buffs-list');
+  if (!buffs.length) { el.innerHTML = '<div style="color:var(--white-dim); font-size:0.85rem; margin-bottom:8px;">No changes recorded yet.</div>'; return; }
+  el.innerHTML = buffs.map((b,i) => `
+    <div style="display:flex; align-items:center; gap:10px; padding:8px 12px; background:rgba(10,22,40,0.5); border-radius:8px; margin-bottom:6px; border:1px solid rgba(139,92,246,0.15);">
+      <div style="flex:1;">
+        <span style="font-weight:700; color:var(--white);">${b.name}</span>
+        <span class="badge badge-blue" style="margin-left:8px;">${b.type}</span>
+        <div style="font-size:0.8rem; color:var(--white-dim); margin-top:2px;">${b.desc}</div>
+      </div>
+      <button class="btn btn-danger btn-sm btn-icon" onclick="removeChampBuff(${i})">✕</button>
+    </div>`).join('');
+}
+
+function addChampBuff() {
+  const name = document.getElementById('buff-name').value.trim();
+  const type = document.getElementById('buff-type').value;
+  const desc = document.getElementById('buff-desc').value.trim();
+  if (!name || !desc) return;
+  if (!champRulesData[championsFormat]) champRulesData[championsFormat] = {};
+  if (!champRulesData[championsFormat].buffs) champRulesData[championsFormat].buffs = [];
+  champRulesData[championsFormat].buffs.push({name, type, desc});
+  localStorage.setItem(CHAMP_RULES_KEY, JSON.stringify(champRulesData));
+  document.getElementById('buff-name').value = '';
+  document.getElementById('buff-desc').value = '';
+  renderChampBuffsList();
+}
+
+function removeChampBuff(i) {
+  champRulesData[championsFormat].buffs.splice(i, 1);
+  localStorage.setItem(CHAMP_RULES_KEY, JSON.stringify(champRulesData));
+  renderChampBuffsList();
+}
+
+// ============================================================
+// META PAGE
+// ============================================================
+
+const META_KEY = 'pokeforge_meta_v1';
+let metaData = {};
+let currentMetaFormat = 'vgc';
+let currentMetaTab = 'usage';
+
+try { metaData = JSON.parse(localStorage.getItem(META_KEY) || '{}'); } catch(e) {}
+
+// Default seed data so the page isn't empty on first load
+const META_DEFAULTS = {
+
+  // ─────────────────────────────────────────────────
+  // VGC 2025 — Regulation H (Series 1, Restricted allowed)
+  // Source: Limitless, Smogon VGC Stats, EUIC/NAIC 2025 data
+  // ─────────────────────────────────────────────────
+  vgc: {
+    lastUpdated: '2025-07-01',
+    usage: [
+      {name:'Incineroar',   usage:71.4, role:'Intimidate / Fake Out anchor', types:['Fire','Dark']},
+      {name:'Flutter-Mane', usage:58.9, role:'Restricted — fast special sweeper', types:['Ghost','Fairy']},
+      {name:'Rillaboom',    usage:52.3, role:'Grassy Surge / priority Grassy Glide', types:['Grass']},
+      {name:'Amoonguss',    usage:49.7, role:'Redirection + Spore utility', types:['Grass','Poison']},
+      {name:'Urshifu-Rapid',usage:44.6, role:'Surging Strikes bypasses protect', types:['Fighting','Water']},
+      {name:'Calyrex-Ice',  usage:41.2, role:'Restricted — Trick Room sweeper under TR', types:['Psychic','Ice']},
+      {name:'Tornadus',     usage:39.8, role:'Tailwind setter / Prankster screens', types:['Flying']},
+      {name:'Gholdengo',    usage:38.5, role:'Good as Gold blocks status, coverage', types:['Steel','Ghost']},
+      {name:'Landorus-Therian', usage:36.1, role:'Intimidate pivot / stealth rock', types:['Ground','Flying']},
+      {name:'Raging-Bolt',  usage:33.7, role:'Paradox — Thunderclap priority + bulk', types:['Electric','Dragon']},
+      {name:'Iron-Hands',   usage:31.9, role:'Belly Drum + Fake Out + bulk', types:['Fighting','Electric']},
+      {name:'Urshifu-Single',usage:28.4, role:'Wicked Blow ignores protect & crits', types:['Fighting','Dark']},
+      {name:'Miraidon',     usage:26.8, role:'Restricted — Electric Terrain + raw power', types:['Electric','Dragon']},
+      {name:'Koraidon',     usage:25.3, role:'Restricted — Orichalcum Pulse sun abuser', types:['Fighting','Dragon']},
+      {name:'Whimsicott',   usage:24.1, role:'Prankster Tailwind / Encore / Moonblast', types:['Grass','Fairy']},
+      {name:'Ursaluna',     usage:22.7, role:'Guts + Facade Trick Room sweeper', types:['Normal','Ground']},
+      {name:'Farigiraf',    usage:21.3, role:'Trick Room setter / Psychic Surge', types:['Normal','Psychic']},
+      {name:'Pelipper',     usage:20.6, role:'Drizzle rain setter + Tailwind', types:['Water','Flying']},
+      {name:'Chi-Yu',       usage:19.4, role:'Restricted — Beads of Ruin drops SpD', types:['Fire','Dark']},
+      {name:'Chien-Pao',    usage:18.2, role:'Restricted — Sword of Ruin drops Def, fast Ice Shard', types:['Dark','Ice']},
+      {name:'Ogerpon-Wellspring', usage:17.9, role:'Mold Breaker water sweeper', types:['Water']},
+      {name:'Palafin',      usage:17.1, role:'Jet Punch priority + huge Attack after Zero-to-Hero', types:['Water']},
+      {name:'Kingambit',    usage:16.8, role:'Supreme Overlord stacks, priority Sucker Punch', types:['Dark','Steel']},
+      {name:'Terapagos',    usage:15.4, role:'Restricted — Stellar type Tera Blast nuke', types:['Normal']},
+      {name:'Wo-Chien',     usage:14.7, role:'Tablets of Ruin drops Atk on enemies', types:['Dark','Grass']},
+      {name:'Grimmsnarl',   usage:13.9, role:'Prankster dual screens and Thunder Wave', types:['Dark','Fairy']},
+      {name:'Torkoal',      usage:13.2, role:'Drought sun setter + Trick Room slow pivot', types:['Fire']},
+      {name:'Arcanine',     usage:12.8, role:'Intimidate + Extreme Speed priority', types:['Fire']},
+      {name:'Iron-Boulder', usage:12.1, role:'Paradox — Minds Eye + Rock/Psychic coverage', types:['Rock','Psychic']},
+      {name:'Murkrow',      usage:11.6, role:'Prankster Tailwind + Thunder Wave disruptor', types:['Dark','Flying']}
+    ],
+    items: [
+      {name:'Booster-Energy', usage:22.4, note:'Powers up Paradox mons without requiring weather/terrain'},
+      {name:'Focus-Sash',     usage:19.7, note:'Prevents 1-hit KOs, essential on frail leads'},
+      {name:'Choice-Scarf',   usage:18.1, note:'Speed control on mid-speed attackers'},
+      {name:'Life-Orb',       usage:16.3, note:'Extra damage on mixed or special attackers'},
+      {name:'Assault-Vest',   usage:15.8, note:'Bulk on offensive Pokémon; very common on Incineroar'},
+      {name:'Covert-Cloak',   usage:14.2, note:'Blocks secondary effects — Spore, Lava Plume flinch'},
+      {name:'Leftovers',      usage:11.7, note:'Passive recovery on bulky support mons'},
+      {name:'Sitrus-Berry',   usage:10.4, note:'One-time mid-battle heal; good under Trick Room'},
+      {name:'Rocky-Helmet',   usage:9.6,  note:'Punishes Fake Out and contact moves'},
+      {name:'Mental-Herb',    usage:8.9,  note:'One-time Taunt / Encore protection'},
+      {name:'Safety-Goggles', usage:7.3,  note:'Immune to Spore and powder moves'},
+      {name:'Clear-Amulet',   usage:6.8,  note:'Blocks stat drops from Intimidate and Ruin abilities'}
+    ],
+    moves: [
+      {name:'Protect',      usage:76.3, note:'Mandatory scouting / partner positioning tool'},
+      {name:'Fake-Out',     usage:58.2, note:'Flinch to buy turns; pairs with slow sweepers'},
+      {name:'Tailwind',     usage:41.7, note:'Doubles team speed for 4 turns — tide-turner'},
+      {name:'Spore',        usage:34.9, note:'100% sleep; best status move in the game'},
+      {name:'Tera-Blast',   usage:31.2, note:'Stellar / offensive Tera type nuke'},
+      {name:'Follow-Me',    usage:27.6, note:'Redirect onto support to let partner move freely'},
+      {name:'Rage-Powder',  usage:24.8, note:'Amoonguss redirect; works even on Grass types'},
+      {name:'Helping-Hand', usage:22.3, note:'+50% damage to partner; stacks with other boosts'},
+      {name:'Surging-Strikes', usage:19.7, note:'3-hit Urshifu move bypasses protect and crits'},
+      {name:'Thunder-Wave', usage:18.4, note:'Para spread; slows restricted legendaries'},
+      {name:'Extreme-Speed', usage:17.8, note:'+2 priority; revenge kills weakened threats'},
+      {name:'Will-O-Wisp',  usage:16.2, note:'Cripples physical attackers; Incineroar staple'},
+      {name:'Trick-Room',   usage:15.9, note:'Reverses speed order for 5 turns'},
+      {name:'Encore',       usage:13.4, note:'Locks opponents into bad moves; Whimsicott staple'}
+    ],
+    teams: [
+      {
+        name:'Regulation H Sun Offense (EUIC 2025 Top 8)',
+        mons:['Koraidon','Flutter-Mane','Incineroar','Torkoal','Amoonguss','Urshifu-Rapid'],
+        result:'Top 8 — European International Championship 2025',
+        desc:'Koraidon\'s Orichalcum Pulse summons sun boosting Flutter-Mane\'s Moonblast and Torkoal\'s Solar Beam. Incineroar provides Intimidate and Fake Out. Amoonguss redirects with Rage Powder and threatens Spore. Urshifu-Rapid closes games through protect. Key Tera types: Koraidon → Fairy; Flutter-Mane → Stellar.'
+      },
+      {
+        name:'Miraidon Electric Terrain Offense (NAIC 2025 Winner)',
+        mons:['Miraidon','Flutter-Mane','Rillaboom','Incineroar','Urshifu-Rapid','Iron-Hands'],
+        result:'1st Place — North America International Championship 2025',
+        desc:'Miraidon sets Electric Terrain, boosting its own Electric moves and enabling Rillaboom\'s Grassy Glide priority. Flutter-Mane cleans up with terrain-boosted Thunderbolt. Iron-Hands Belly Drums under terrain for a 250+ base Attack sweep. Incineroar provides Intimidate chip. Tera Steel Miraidon walls most opposing leads.'
+      },
+      {
+        name:'Calyrex-Ice Trick Room (Worlds 2025 Top 4)',
+        mons:['Calyrex-Ice','Ursaluna','Incineroar','Farigiraf','Amoonguss','Flutter-Mane'],
+        result:'Top 4 — World Championship 2025',
+        desc:'Farigiraf sets Trick Room as the slowest possible Psychic Terrain setter. Calyrex-Ice and Ursaluna sweep under reversed speed. Amoonguss handles Spore and Rage Powder to protect the duo. Flutter-Mane provides a fast-mode threat when Trick Room expires. Incineroar glues the team with Fake Out and Parting Shot.'
+      },
+      {
+        name:'Chien-Pao Sun (LAIC 2025 Top 16)',
+        mons:['Chien-Pao','Flutter-Mane','Incineroar','Torkoal','Whimsicott','Landorus-Therian'],
+        result:'Top 16 — Latin America International Championship 2025',
+        desc:'Chien-Pao\'s Sword of Ruin drops enemy Defense, allowing Flutter-Mane and Landorus to OHKO much bulkier threats. Whimsicott Prankster Tailwind turns Chien-Pao from fast to absurd. Torkoal\'s Drought enables Solar Beam tech coverage. Strong sun + speed offense with Intimidate pivot fall-back.'
+      },
+      {
+        name:'Terapagos Stellar Beam (Regional Top 4)',
+        mons:['Terapagos','Flutter-Mane','Incineroar','Rillaboom','Grimmsnarl','Urshifu-Single'],
+        result:'Top 4 — Charlotte Regional 2025',
+        desc:'Grimmsnarl sets dual screens to let Terapagos safely Tera into Stellar form. Stellar Tera Blast hits everything neutrally for massive damage. Flutter-Mane provides fast-mode pressure. Rillaboom Grassy Glide priority finishes weakened foes. Incineroar Fake Out + Urshifu Wicked Blow round out the team\'s match-up spread.'
+      },
+      {
+        name:'Rain Hyper Offense (Online Regional Winner)',
+        mons:['Pelipper','Palafin','Urshifu-Rapid','Rillaboom','Incineroar','Gholdengo'],
+        result:'1st Place — Online Regional March 2025',
+        desc:'Pelipper\s Drizzle boosts Palafin\'s Jet Punch and Urshifu\'s Surging Strikes. Palafin uses Zero-to-Hero to achieve 160 base Attack mid-game. Gholdengo\'s Good as Gold blocks all status moves directed at it. Rillaboom\'s Grassy Terrain recovery lets the team play a long game when needed.'
+      }
+    ],
+    strategies: [
+      {
+        title:'Sun Offense (S-tier meta core)',
+        desc:'The premier archetype of VGC 2025. A Drought setter (Torkoal) or Orichalcum Pulse user (Koraidon) enables Solar Beam on normally 2-turn moves and multiplies Fire move damage. Flutter-Mane and Chi-Yu thrive in sun; Koraidon\'s own attack is further boosted. Counter by bringing your own weather (rain/sand) or targeting the setter with Taunt or Fake Out turn 1.'
+      },
+      {
+        title:'Trick Room Offense (consistent top performer)',
+        desc:'A slow, tanky Trick Room setter (Farigiraf, Indeedee-F, Porygon2) reverses speed for 5 turns, letting Calyrex-Ice, Ursaluna, or Iron Hands move first. Critical to bring Mental Herb on the setter so it isn\'t stopped by Taunt. Counter by taunting the setter, using Imprison + Trick Room yourself, or out-speeding the setter turn 1 and KOing it. Tera can rescue a failed Trick Room attempt.'
+      },
+      {
+        title:'Tailwind Hyper Offense',
+        desc:'Tornadus (Heat Wave / Tailwind / Taunt / Bleakwind Storm) or Whimsicott (Prankster Moonblast / Tailwind / Encore) provides free speed doubling for 4 turns. Pair with Flutter-Mane, Miraidon, or Chien-Pao to erase threats. Fragile — the setter must survive turn 1. Mental Herb users and Murkrow (Prankster Taunt) can shut this down. Best paired with Fake Out from Incineroar to buy the Tailwind safely.'
+      },
+      {
+        title:'Intimidate Stacking',
+        desc:'Running Incineroar + Landorus-Therian (or Arcanine) gives two Intimidate sources, dropping physical attackers to 50% attack on entry. Combined with Incineroar\'s Parting Shot this can cycle -3 or lower, making physical sweepers irrelevant. Counter with Clear Amulet, Defiant (Kingambit), or Competitive (Milotic). Gholdengo\'s Good as Gold blocks Parting Shot.'
+      },
+      {
+        title:'Ruin Ability Synergy',
+        desc:'Pairing two Ruin Pokémon (Chien-Pao + Wo-Chien, or Chi-Yu + Ting-Lu) applies double stat drops to all enemies simultaneously. Chien-Pao + Chi-Yu drops Defense AND Special Defense, making everything on the opposing side far easier to KO. Very powerful in short games. Counter by KOing the Ruin mons quickly before they stack damage.'
+      },
+      {
+        title:'Paradox Booster Energy Offense',
+        desc:'Iron Hands, Raging Bolt, Iron Boulder, Flutter-Mane, and other Paradox Pokémon activate Protosynthesis / Quark Drive with Booster Energy to boost their highest stat even without weather or terrain. Raging Bolt gets +Speed and Thunderclap becomes a priority special nuke. Iron Hands gets +Attack. Iron Boulder gets +Speed + Minds Eye coverage. Hard to set up countermeasures for.'
+      },
+      {
+        title:'Protect + Fake Out Frame Manipulation',
+        desc:'Nearly every VGC game is decided by Fake Out timing and Protect reads. Fake Out forces a flinch on turn 1, letting your partner move freely. Protecting the Fake Out target on the opponent\'s side wastes the Fake Out. Good players cycle between attacking and Protecting to keep opponents guessing. Incineroar\s wide Fake Out + Parting Shot flexibility is why it sits at 71% usage.'
+      },
+      {
+        title:'Spore + Rage Powder (Amoonguss Core)',
+        desc:'Amoonguss uses Rage Powder to redirect damage onto itself, protecting the restricted legendary partner. On the following turn it lands a 100% accurate Spore to remove the other threat. The duo of Amoonguss + a Restricted sweeper appears on nearly half of all top-cut teams. Counter with Safety Goggles (immune to Spore/Rage Powder), Lum Berry on the target, or Overcoat Pokémon.'
+      }
+    ],
+    threats: [
+      {name:'Flutter-Mane',    why:'135 SpA + 135 Speed as a Ghost/Fairy hits nearly everything. Moonblast + Shadow Ball + Thunderbolt + Tera Blast covers all types. Countered by Incineroar, Kingambit (Sucker Punch), or Steel types.', types:['Ghost','Fairy']},
+      {name:'Calyrex-Ice',     why:'Restricted powerhouse — Glacial Lance hits both targets and ignores abilities. Under Trick Room it outspeeds everything. Counter with Incineroar Fake Out + partner KO, or fast Fire/Steel types.', types:['Psychic','Ice']},
+      {name:'Miraidon',        why:'185 base SpA with Electric Terrain boosted Electro Drift OHKOs nearly everything. Hadron Engine sets terrain on entry. Counter with Ground types (immune) or Mudsdale/Ting-Lu.', types:['Electric','Dragon']},
+      {name:'Urshifu-Rapid',   why:'Surging Strikes hits through protect, always crits, and breaks Focus Sash. 40% chance to break Sturdy per hit. The only true "protect bypass." Counter: Dondozo + Tatsugiri (Unaware wall), or a faster KO.', types:['Fighting','Water']},
+      {name:'Iron-Hands',      why:'Belly Drum + Fake Out reaches 250+ Attack and then Drain Punch heals back up. Electric typing makes it immune to Paralysis. Counter with Will-O-Wisp or a faster Pokémon that can OHKO before it heals.', types:['Fighting','Electric']},
+      {name:'Raging-Bolt',     why:'Thunderclap is a +1 priority special move that OHKOs most non-resists. Booster Energy + Dragonblast coverage. Counter: priority moves that outpace Thunderclap, or Dark types (immune to Thunderclap).', types:['Electric','Dragon']},
+      {name:'Gholdengo',       why:'Good as Gold makes it immune to ALL status moves — blocks Spore, Thunder Wave, Taunt, Roar, Fake Out. Shadow Ball + Thunderbolt + Make It Rain sweeps. Counter: physical attackers, Incineroar Parting Shot (bypasses Good as Gold).', types:['Steel','Ghost']},
+      {name:'Chien-Pao',       why:'Sword of Ruin drops ALL opponents\' Defense by 25%. Ice Shard priority + Sucker Punch + Sacred Sword coverage. Very fast. Counter: Fairy types, Incineroar, or teams that can KO it turn 1.', types:['Dark','Ice']},
+      {name:'Amoonguss',       why:'Spore + Rage Powder combination is the most disruptive duo in VGC. Teams without Safety Goggles or Lum Berry often lose to a single well-timed Spore. Counter: Safety Goggles, Overcoat, or Fire types.', types:['Grass','Poison']},
+      {name:'Ogerpon-Wellspring', why:'Mold Breaker ignores abilities like Sturdy/Multiscale. Ivy Cudgel is Water-type after Tera with boosted power. Counter: strong Electric or Grass attackers, or Gholdengo.', types:['Water']},
+      {name:'Kingambit',       why:'Supreme Overlord gives +10% Attack per fainted ally — mid-game sweeper. Kowtow Cleave ignores accuracy checks. Sucker Punch +1 priority. Counter: Fighting types, burn, or Intimidate cycling.', types:['Dark','Steel']},
+      {name:'Koraidon',        why:'Restricted — Orichalcum Pulse + sun + Tera: Flare Blitz OHKOs most of the game. 100 base Speed is deceptively fast. Counter: faster Water/Ground types, or Flash Fire abilities.', types:['Fighting','Dragon']}
+    ]
+  },
+
+  // ─────────────────────────────────────────────────
+  // GO GREAT LEAGUE (≤1500 CP) — 2025 PvP Meta
+  // Source: PvPoke.com rankings, GO Battle League Season 21 data
+  // ─────────────────────────────────────────────────
+  'go-great': {
+    lastUpdated: '2025-07-01',
+    usage: [
+      {name:'Lickitung',      usage:58.4, role:'XL bulky Normal — incredible bulk at GL cap', types:['Normal']},
+      {name:'Swampert',       usage:54.7, role:'Hydro Cannon + Earthquake coverage king', types:['Water','Ground']},
+      {name:'Walrein',        usage:52.1, role:'Icicle Spear Walrein — top Ice/Water threat', types:['Ice','Water']},
+      {name:'Medicham',       usage:49.6, role:'Counter + Power-Up Punch core Fighting threat', types:['Fighting','Psychic']},
+      {name:'Trevenant',      usage:47.3, role:'Shadow Claw + Seed Bomb top meta Ghost/Grass', types:['Ghost','Grass']},
+      {name:'Carbink',        usage:44.9, role:'Fairy/Rock — highest bulk in Great League', types:['Rock','Fairy']},
+      {name:'Galarian-Stunfisk', usage:43.1, role:'Mud Shot + Rock Slide + Earthquake core', types:['Ground','Steel']},
+      {name:'Lanturn',        usage:41.8, role:'Water/Electric — Surf + Thunderbolt coverage', types:['Water','Electric']},
+      {name:'Azumarill',      usage:39.7, role:'Ice Beam + Play Rough Fairy coverage', types:['Water','Fairy']},
+      {name:'Vigoroth',       usage:38.2, role:'Counter + Body Slam + Bulldoze — incredible energy gen', types:['Normal']},
+      {name:'Sableye',        usage:36.9, role:'Shadow Claw + Foul Play — excellent Dark/Ghost', types:['Dark','Ghost']},
+      {name:'Noctowl',        usage:35.4, role:'Wing Attack + Sky Attack + Shadow Ball versatility', types:['Normal','Flying']},
+      {name:'Cresselia',      usage:34.1, role:'Psycho Cut — one of the bulkiest Pokémon in GL', types:['Psychic']},
+      {name:'Alolan-Marowak', usage:32.8, role:'Fire Spin + Shadow Ball + Bone Club', types:['Fire','Ghost']},
+      {name:'Registeel',      usage:31.4, role:'Lock-On + Flash Cannon + Focus Blast core', types:['Steel']},
+      {name:'Skarmory',       usage:29.7, role:'Air Slash + Sky Attack + Brave Bird', types:['Steel','Flying']},
+      {name:'Dewgong',        usage:28.3, role:'Ice Shard + Icy Wind — great in open formats', types:['Water','Ice']},
+      {name:'Stunfisk',       usage:27.1, role:'Mud Shot core — good cheap Ground/Electric option', types:['Ground','Electric']},
+      {name:'Obstagoon',      usage:26.8, role:'Counter + Night Slash + Cross Chop', types:['Dark','Normal']},
+      {name:'Annihilape',     usage:25.4, role:'Counter + Night Slash + Close Combat', types:['Fighting','Ghost']}
+    ],
+    items: [],
+    moves: [
+      {name:'Counter',         usage:62.1, note:'Highest DPT Fighting fast move — core of many teams'},
+      {name:'Mud-Shot',        usage:58.7, note:'Top energy generation Ground fast move'},
+      {name:'Shadow-Claw',     usage:51.3, note:'Good Ghost DPT with fast energy generation'},
+      {name:'Lock-On',         usage:44.2, note:'Registeel exclusive — charges charged moves instantly'},
+      {name:'Hydro-Cannon',    usage:41.8, note:'Community Day legacy move — best Water charged move'},
+      {name:'Body-Slam',       usage:38.9, note:'Cheap Normal charged move; bait shields effectively'},
+      {name:'Power-Up-Punch',  usage:36.4, note:'Medicham core — boosts Attack then hits hard'},
+      {name:'Surf',            usage:33.7, note:'Cheap 2-bar Water move; excellent neutral coverage'},
+      {name:'Earthquake',      usage:31.2, note:'Expensive but massive Ground charged move nuke'},
+      {name:'Play-Rough',      usage:28.6, note:'Core Fairy charged move on Azumarill'},
+      {name:'Ice-Beam',        usage:26.9, note:'Solid 2-bar Ice coverage move'},
+      {name:'Seed-Bomb',       usage:24.3, note:'Cheap 3-bar Grass move; Trevenant staple'},
+      {name:'Shadow-Ball',     usage:22.8, note:'2-bar Ghost/Psychic coverage staple'}
+    ],
+    teams: [
+      {
+        name:'Swampert / Trevenant / Registeel (Classic Core)',
+        mons:['Swampert','Trevenant','Registeel'],
+        result:'Top meta core — GL Season 21',
+        desc:'The textbook Great League safe core. Swampert beats Electric, Fire, Poison, Rock. Trevenant beats Water, Ground, Psychic. Registeel beats Fairy, Ice, Normal, Flying. Each covers the other\'s weaknesses almost perfectly. Swampert leads with Mud Shot for fast energy into Hydro Cannon, Earthquake shields bait. Trevenant punishes Swampert counters. Registeel closes games with Flash Cannon.'
+      },
+      {
+        name:'Medicham / Walrein / Lanturn (Season 21 Ranked 1)',
+        mons:['Medicham','Walrein','Lanturn'],
+        result:'#1 Ranked Core — Season 21 Week 4',
+        desc:'Medicham leads with Counter energy into Power-Up-Punch + Psychic for dual coverage. Walrein hard-counters Dragon and Ground leads with Icicle Spear spam. Lanturn provides Electric immunity and beats Flying/Fire. The three cover 15 of 18 types offensively. Lanturn Surf is cheap enough to bait shields while Spark charges Thunderbolt.'
+      },
+      {
+        name:'Carbink / Annihilape / Swampert (Fairy-Ghost-Water)',
+        mons:['Carbink','Annihilape','Swampert'],
+        result:'Top 10 ladder core — Season 21',
+        desc:'Carbink\'s unmatched bulk in Great League tanks most neutral hits while charging Rock Slide + Moonblast. Annihilape\'s Ghost/Fighting dual typing handles Normal and Dark types that threaten Carbink. Swampert cleans up Steel types that wall Annihilape. Rage Fist Annihilape hits progressively harder as it faints teammates in GO — a unique mechanic.'
+      },
+      {
+        name:'Galarian-Stunfisk / Vigoroth / Sableye (Accessible Meta)',
+        mons:['Galarian-Stunfisk','Vigoroth','Sableye'],
+        result:'Consistent high-ladder budget team',
+        desc:'All three are catchable without needing Legacy moves. G-Stunfisk\'s Mud Shot charges Rock Slide and Earthquake constantly — high shield pressure. Vigoroth\'s Body Slam spam with no weaknesses in the Steel/Ghost/Ground meta is deceptively hard to handle. Sableye has only one weakness (Fairy) and handles Ghost/Psychic/Dark matchups.'
+      }
+    ],
+    strategies: [
+      {
+        title:'Shield Pressure & Bait',
+        desc:'The core decision tree in GO PvP. Cheap charged moves (Body Slam, Seed Bomb, Surf) bait opponents into wasting shields on low-damage hits. Then the expensive nuke (Earthquake, Hydro Cannon, Focus Blast) lands unshielded. Mastering when to throw bait vs. nuke defines GL skill ceiling. Medicham\'s Power-Up-Punch is the apex of this — it costs only 40 energy but stacks +1 Atk.'
+      },
+      {
+        title:'Switching & Type Coverage',
+        desc:'GO PvP allows 2 switches per battle with a 60-second cooldown. The best teams have each Pokémon covering the other\'s weakness. Lead with the Pokémon that beats the opponent\'s lead, then switch if you lose. Back Pokémon should have coverage against the counters of your Lead. Most top Great League cores have mutual coverage in a triangle structure.'
+      },
+      {
+        title:'Energy Farming & Closer Play',
+        desc:'Farm energy by taking a few hits rather than immediately switching. Letting your lead take neutral hits to accumulate one more charged move is often correct — especially when the opponent has no remaining shields. Closer Pokémon (3rd slot) should be extremely bulky (Registeel, Cresselia, Carbink) and able to win 1v1 against common endgame threats.'
+      },
+      {
+        title:'Fast Move Priority & Turns',
+        desc:'GO battles run on a turn system — 0.5 seconds per turn. Faster fast moves (Counter: 1 turn, Mud Shot: 1 turn) generate more energy per second than slow moves (Dragon Breath: 1.5 turns). Pokémon with fast-energy moves can cycle charged moves more frequently, maintaining constant shield pressure. Avoid Pokémon whose best moves are slow-charging in Great League.'
+      }
+    ],
+    threats: [
+      {name:'Medicham',       why:'Counter + Power-Up-Punch stacks Attack boosts. Psychic / Ice Punch coverage. Nearly impossible to wall. Counter with Ghost types or high-bulk Pokémon.', types:['Fighting','Psychic']},
+      {name:'Walrein',        why:'Icicle Spear multi-hit move is unpredictable in damage. Bulk + dual STAB coverage. Counter with Steel or Water types that resist Ice.', types:['Ice','Water']},
+      {name:'Trevenant',      why:'Only weakness is Ghost, Fire, Dark, and Flying — but Seed Bomb and Shadow Claw hit nearly everything neutrally. Very hard to switch into safely.', types:['Ghost','Grass']},
+      {name:'Galarian-Stunfisk', why:'Rock Slide bait into Earthquake nuke is one of the most potent shield-drain combos in GL. Mud Shot generates energy faster than most fast moves.', types:['Ground','Steel']},
+      {name:'Carbink',        why:'Highest effective bulk in Great League. Rock Slide + Moonblast covers most threats. Almost no weakness at 1500 CP due to bulk scaling. Hard counter: Steel or Poison types.', types:['Rock','Fairy']}
+    ]
+  },
+
+  // ─────────────────────────────────────────────────
+  // GO ULTRA LEAGUE (≤2500 CP) — 2025 PvP Meta
+  // Source: PvPoke.com, Season 21 UL rankings
+  // ─────────────────────────────────────────────────
+  'go-ultra': {
+    lastUpdated: '2025-07-01',
+    usage: [
+      {name:'Registeel',      usage:61.3, role:'Lock-On + Flash Cannon + Focus Blast — supreme bulk', types:['Steel']},
+      {name:'Giratina-Altered', usage:57.8, role:'Shadow Force + Dragon Claw + Ancient Power', types:['Ghost','Dragon']},
+      {name:'Cresselia',      usage:54.2, role:'Psycho Cut + Grass Knot + Moonblast — incredible bulk', types:['Psychic']},
+      {name:'Swampert',       usage:51.9, role:'Hydro Cannon + Earthquake core Water/Ground', types:['Water','Ground']},
+      {name:'Talonflame',     usage:47.4, role:'Incinerate + Brave Bird + Flame Charge', types:['Fire','Flying']},
+      {name:'Obstagoon',      usage:44.6, role:'Counter + Night Slash + Cross Chop', types:['Dark','Normal']},
+      {name:'Galarian-Stunfisk', usage:41.8, role:'Mud Shot + Rock Slide + Earthquake', types:['Ground','Steel']},
+      {name:'Jellicent',      usage:38.7, role:'Hex + Shadow Ball + Bubble Beam', types:['Water','Ghost']},
+      {name:'Nidoqueen',      usage:36.4, role:'Poison Jab + Earth Power + Sludge Wave', types:['Poison','Ground']},
+      {name:'Abomasnow',      usage:34.9, role:'Powder Snow + Energy Ball + Blizzard', types:['Grass','Ice']},
+      {name:'Drifblim',       usage:33.1, role:'Hex + Icy Wind + Shadow Ball', types:['Ghost','Flying']},
+      {name:'Pidgeot',        usage:31.8, role:'Wing Attack + Feather Dance + Brave Bird', types:['Normal','Flying']},
+      {name:'Tentacruel',     usage:29.4, role:'Poison Jab + Scald + Sludge Wave', types:['Water','Poison']},
+      {name:'Venusaur',       usage:27.6, role:'Vine Whip + Frenzy Plant + Sludge Bomb', types:['Grass','Poison']},
+      {name:'Lapras',         usage:26.3, role:'Ice Shard + Surf + Skull Bash', types:['Water','Ice']},
+      {name:'Poliwrath',      usage:24.8, role:'Mud Shot + Dynamic Punch + Ice Punch', types:['Water','Fighting']},
+      {name:'Empoleon',       usage:23.4, role:'Waterfall + Hydro Cannon + Flash Cannon', types:['Water','Steel']},
+      {name:'Articuno',       usage:22.7, role:'Ice Shard + Icy Wind + Ancient Power', types:['Ice','Flying']},
+      {name:'Charizard',      usage:21.3, role:'Fire Spin + Blast Burn + Dragon Claw', types:['Fire','Flying']},
+      {name:'Machamp',        usage:20.1, role:'Counter + Cross Chop + Rock Slide', types:['Fighting']}
+    ],
+    items: [],
+    moves: [
+      {name:'Mud-Shot',        usage:59.4, note:'Fastest energy generation Ground fast move'},
+      {name:'Counter',         usage:54.7, note:'Top Fighting DPT fast move'},
+      {name:'Lock-On',         usage:49.3, note:'Registeel exclusive — charges moves instantly'},
+      {name:'Psycho-Cut',      usage:44.8, note:'Cresselia core — fast energy generation Psychic'},
+      {name:'Incinerate',      usage:41.2, note:'Talonflame exclusive — huge DPT fire fast move'},
+      {name:'Hydro-Cannon',    usage:37.6, note:'Legacy CD move — best Water charged move'},
+      {name:'Shadow-Ball',     usage:34.9, note:'Ghost nuke coverage on Giratina, Jellicent'},
+      {name:'Flash-Cannon',    usage:31.3, note:'Registeel/Empoleon core 2-bar Steel move'},
+      {name:'Dragon-Claw',     usage:28.7, note:'Cheap Dragon 2-bar on Giratina, Dragonite'},
+      {name:'Focus-Blast',     usage:26.4, note:'High-power Fighting nuke; beats Steel/Ice/Dark'},
+      {name:'Ancient-Power',   usage:23.8, note:'Cheap Rock/Ice coverage on multiple Pokémon'},
+      {name:'Brave-Bird',      usage:21.6, note:'Nuke Flying move on Talonflame + Pidgeot'},
+      {name:'Grass-Knot',      usage:19.3, note:'Cresselia coverage vs Water/Rock/Ground'}
+    ],
+    teams: [
+      {
+        name:'Giratina / Swampert / Registeel (Classic UL Core)',
+        mons:['Giratina-Altered','Swampert','Registeel'],
+        result:'#1 Ultra League core — multiple seasons',
+        desc:'The single most dominant Ultra League core across all of GO PvP history. Giratina leads into most things, using Dragon Claw as constant bait and Shadow Force as the nuke. Swampert handles Electric and Rock types that threaten Giratina. Registeel walls Fairy and Ice threats to Giratina and Swampert. All three cover each other\'s weaknesses in a near-perfect triangle.'
+      },
+      {
+        name:'Cresselia / Talonflame / Swampert (Balanced)',
+        mons:['Cresselia','Talonflame','Swampert'],
+        result:'Top 5 UL core — Season 21',
+        desc:'Cresselia\'s absurd bulk lets it farm energy through neutral matchups. Talonflame handles Grass threats to Swampert and Cresselia with Incinerate energy generation. Swampert handles Rock, Fire, Electric threats to Talonflame. Cresselia\'s Grass Knot punishes Water and Ground types. Moonblast handles Dragon and Dark threats. Highly consistent across all matchups.'
+      },
+      {
+        name:'Obstagoon / Jellicent / Registeel (Anti-Meta)',
+        mons:['Obstagoon','Jellicent','Registeel'],
+        result:'Top 10 ladder — Season 21',
+        desc:'Obstagoon\'s unique Dark/Normal typing means Ghost moves do nothing to it. Night Slash + Cross Chop hits most of the UL meta for super effective. Jellicent handles Fighting threats to Obstagoon and baits shields with Shadow Ball. Registeel provides insurance against Fairy types that counter Obstagoon.'
+      },
+      {
+        name:'Nidoqueen / Giratina / Empoleon (Poison Core)',
+        mons:['Nidoqueen','Giratina-Altered','Empoleon'],
+        result:'High ladder niche team — Season 21',
+        desc:'Nidoqueen\'s Poison Jab generates fast energy into Earth Power / Sludge Wave spread. Covers Fairy, Grass, Bug, and Rock simultaneously. Giratina provides Ghost/Dragon utility and bait with Dragon Claw. Empoleon\'s Steel/Water typing gives a strong Fairy resist and counters the Ice types that threaten Giratina.'
+      }
+    ],
+    strategies: [
+      {
+        title:'Bulk Farming in Ultra League',
+        desc:'Unlike Great League, Ultra League rewards extreme bulk. Cresselia, Registeel, and Giratina-Altered can tank multiple charged moves and farm energy from fast moves for many turns. The strategy is to "farm down" your opponent\'s Pokémon by surviving their charged moves and responding with your own. Ultra League rewards patience over fast finishes.'
+      },
+      {
+        title:'Shadow Pokémon Advantage',
+        desc:'Shadow Pokémon deal 20% more damage and take 20% more damage. In Ultra League, many players run Shadow Swampert, Shadow Machamp, and Shadow Venusaur because the extra damage on cheap charged moves creates overwhelming shield pressure. The downside is reduced survivability — counter by targeting them with strong neutral hits before they can launch charged moves.'
+      },
+      {
+        title:'Giratina Lead Dominance',
+        desc:'Giratina-Altered leads over 50% of Ultra League matches. Teams should always have a Giratina answer in slots 2 or 3. Dragon Claw is dirt cheap (35 energy) and applied every 3-4 fast moves. Shadow Force charges in 6 fast moves. The correct counter is a Fairy type (Togekiss, Gardevoir) or Ice/Dragon attacker that can win the lead matchup — forcing Giratina to shield or switch.'
+      }
+    ],
+    threats: [
+      {name:'Giratina-Altered', why:'Omnipresent lead. Dragon Claw every ~8 turns creates constant shield pressure. 261 Defense makes it extremely hard to KO before it fires off 2+ charged moves. Counter: Fairy types or Dark types.', types:['Ghost','Dragon']},
+      {name:'Registeel',       why:'Lock-On + Flash Cannon cycles in 2 fast moves. Barely takes damage from most charged moves. Counter: Ground types (Earthquake/Earth Power) or Fighting types (Focus Blast user).', types:['Steel']},
+      {name:'Cresselia',       why:'Second-highest effective bulk in GO after Blissey. Grass Knot/Moonblast coverage makes it hard to hard-counter. Almost always reaches 3+ charged moves per game. Counter: Dark types, Bug types.', types:['Psychic']},
+      {name:'Talonflame',      why:'Incinerate deals massive damage per turn AND generates energy fast — forcing early shields. Brave Bird nuke from full shields is a game-ender. Counter: Rock or Electric types, or high-bulk Water Pokémon.', types:['Fire','Flying']},
+      {name:'Swampert',        why:'Mud Shot energy generation into Hydro Cannon + Earthquake is one of the strongest baiting combos in the game. Only weak to Grass. Counter: Venusaur, Leafeon, or other fast Grass attackers.', types:['Water','Ground']}
+    ]
+  },
+
+  // ─────────────────────────────────────────────────
+  // GO MASTER LEAGUE (No CP Cap) — 2025 PvP Meta
+  // Source: PvPoke.com Master League rankings, Season 21
+  // ─────────────────────────────────────────────────
+  'go-master': {
+    lastUpdated: '2025-07-01',
+    usage: [
+      {name:'Zacian',          usage:71.2, role:'Iron Head + Close Combat + Play Rough — unmatched Attack', types:['Fairy']},
+      {name:'Eternatus',       usage:64.8, role:'Poison Jab + Dynamax Cannon + Cross Poison', types:['Poison','Dragon']},
+      {name:'Dialga-Origin',   usage:61.4, role:'Dragon Breath + Draco Meteor + Iron Head — supreme bulk', types:['Steel','Dragon']},
+      {name:'Ho-Oh',           usage:56.7, role:'Incinerate + Sacred Fire + Brave Bird coverage', types:['Fire','Flying']},
+      {name:'Mewtwo',          usage:53.9, role:'Psycho Cut + Psystrike + Shadow Ball / Ice Beam', types:['Psychic']},
+      {name:'Yveltal',         usage:51.4, role:'Snarl + Dark Pulse + Oblivion Wing — sustain attacker', types:['Dark','Flying']},
+      {name:'Lugia',           usage:48.7, role:'Dragon Tail + Aeroblast+ + Sky Attack', types:['Psychic','Flying']},
+      {name:'Kyogre',          usage:46.2, role:'Waterfall + Origin Pulse + Blizzard — top Water',types:['Water']},
+      {name:'Groudon',         usage:43.8, role:'Mud Shot + Precipice Blades + Fire Punch', types:['Ground']},
+      {name:'Giratina-Origin', usage:41.3, role:'Shadow Claw + Shadow Force + Dragon Pulse', types:['Ghost','Dragon']},
+      {name:'Xerneas',         usage:38.9, role:'Geomancy + Moonblast + Close Combat — top Fairy', types:['Fairy']},
+      {name:'Rayquaza',        usage:37.4, role:'Air Slash + Dragon Ascent + Outrage — Dragon nuke', types:['Dragon','Flying']},
+      {name:'Palkia-Origin',   usage:35.1, role:'Dragon Tail + Aqua Tail + Draco Meteor', types:['Water','Dragon']},
+      {name:'Zygarde',         usage:32.8, role:'Dragon Tail + Thousand Arrows + Stone Edge', types:['Dragon','Ground']},
+      {name:'Togekiss',        usage:30.4, role:'Charm + Ancient Power + Flamethrower — Fairy wall', types:['Fairy','Flying']},
+      {name:'Solgaleo',        usage:27.9, role:'Steel/Psychic — Flash Cannon + Psychic Fangs', types:['Psychic','Steel']},
+      {name:'Necrozma-DW',     usage:26.1, role:'Shadow Claw + Shadow Ball + Moongeist Beam', types:['Psychic','Ghost']},
+      {name:'Reshiram',        usage:24.7, role:'Fire Fang + Overheat + Draco Meteor', types:['Dragon','Fire']},
+      {name:'Garchomp',        usage:22.4, role:'Dragon Tail + Outrage + Earth Power — non-legendary option', types:['Dragon','Ground']},
+      {name:'Dragonite',       usage:20.8, role:'Dragon Breath + Draco Meteor + Hurricane — accessible', types:['Dragon','Flying']}
+    ],
+    items: [],
+    moves: [
+      {name:'Dragon-Breath',   usage:67.3, note:'Best Dragon fast move — high DPT + fast energy'},
+      {name:'Shadow-Claw',     usage:58.4, note:'Ghost fast move — excellent on Giratina-Origin'},
+      {name:'Incinerate',      usage:53.1, note:'Ho-Oh exclusive — highest sustained DPT fast move'},
+      {name:'Mud-Shot',        usage:47.8, note:'Ground energy core on Groudon, Zygarde, Garchomp'},
+      {name:'Charm',           usage:44.2, note:'Fairy DPT nuke — destroys Dragon types but slow energy'},
+      {name:'Snarl',           usage:41.6, note:'Yveltal fast move — fast energy into Oblivion Wing'},
+      {name:'Origin-Pulse',    usage:38.9, note:'Kyogre exclusive — massive Water nuke move'},
+      {name:'Precipice-Blades',usage:35.4, note:'Groudon exclusive — Ground nuke ignores Flying immunity'},
+      {name:'Draco-Meteor',    usage:32.7, note:'Dragon nuke — highest Dragon damage in the game'},
+      {name:'Psystrike',       usage:29.1, note:'Mewtwo exclusive — Psychic move that uses Attack stat'},
+      {name:'Sacred-Fire-Plus',usage:26.4, note:'Ho-Oh Apex move — 80 power + burn chance'},
+      {name:'Aeroblast-Plus',  usage:23.8, note:'Lugia Apex move — 180 power Flying nuke'},
+      {name:'Oblivion-Wing',   usage:21.3, note:'Yveltal exclusive — heals Yveltal\'s HP on use'}
+    ],
+    teams: [
+      {
+        name:'Zacian / Dialga-Origin / Ho-Oh (Dominant Standard)',
+        mons:['Zacian','Dialga-Origin','Ho-Oh'],
+        result:'#1 Master League core — Season 21',
+        desc:'Zacian\'s Fairy + Steel coverage with Iron Head + Close Combat + Play Rough handles nearly everything. Dialga-Origin\'s Steel/Dragon typing gives only one weakness (Fighting) and trades well against Dragon threats to Zacian. Ho-Oh with Incinerate generates energy extremely fast, Brave Bird + Sacred Fire handling Steel and Fairy types that threaten the pair. The most consistent ML core in GO history.'
+      },
+      {
+        name:'Mewtwo / Yveltal / Kyogre (Power Trio)',
+        mons:['Mewtwo','Yveltal','Kyogre'],
+        result:'Top 5 Master League — Season 21',
+        desc:'All three Pokémon have access to powerful Apex or exclusive moves. Mewtwo\'s Psystrike is the best 2-bar Psychic move in the game and bypasses Psychic resist by using Attack stat. Yveltal\'s Oblivion Wing heals HP mid-battle creating a sustain advantage. Kyogre\'s Origin Pulse is an unresisted Water nuke. Together they cover Fire/Water/Fighting/Dark/Flying/Psychic.'
+      },
+      {
+        name:'Lugia / Eternatus / Togekiss (Defensive Core)',
+        mons:['Lugia','Eternatus','Togekiss'],
+        result:'High-ladder defensive team — Season 21',
+        desc:'Lugia is the bulkiest Pokémon in Master League that remains competitive. Aeroblast+ at 180 power requires shields from any opponent. Eternatus\' Poison/Dragon typing gives it resistances to Fighting, Bug, Grass, Fire, and Electric. Togekiss handles Dragon threats to Lugia with Charm and baits shields with Ancient Power. Very hard to break through without Fairy or Ice coverage.'
+      },
+      {
+        name:'Groudon / Zacian / Ho-Oh (Land-Sea-Sky)',
+        mons:['Groudon','Zacian','Ho-Oh'],
+        result:'Regional tournament winner core',
+        desc:'Groudon\'s Precipice Blades hits Steel and Electric types threatening Zacian. Zacian handles Rock, Ice, and Water threats to Groudon. Ho-Oh provides Fire coverage for Steel types immune to or resistant to Groudon\'s Ground moves. Mud Shot energy generation on Groudon lets it cycle Fire Punch + Precipice Blades frequently. Strong type triangle with mutual coverage.'
+      }
+    ],
+    strategies: [
+      {
+        title:'Legendary Apex Move Advantage',
+        desc:'Apex Shadow Ho-Oh (Sacred Fire+) and Apex Shadow Lugia (Aeroblast+) deal roughly 20% more damage than standard versions. These moves often 2-shot Pokémon that normally 3-shot. Having Apex moves creates a stat disparity that fundamentally changes which matchups are winnable. In Master League, if your opponent has Apex moves and you don\'t, plan to switch efficiently to mitigate the damage gap.'
+      },
+      {
+        title:'Zacian Baiting & Close Combat Timing',
+        desc:'Zacian\s Iron Head is cheap (45 energy) and bails shields constantly. Once both shields are down, Close Combat (45 energy) OHKOs nearly anything that isn\'t a Ghost or Psychic type. The correct play vs Zacian is to shield Iron Heads and save your shield for Play Rough if a Fairy-immune Pokémon is in danger. Never fight Zacian in a neutral matchup without a plan.'
+      },
+      {
+        title:'Dragon Breath + Draco Meteor Core',
+        desc:'Dialga-Origin, Palkia-Origin, and Rayquaza all use Dragon Breath as the best Dragon fast move. Draco Meteor provides the nuke finish at 100 power. The counters are either Fairy types (Zacian, Togekiss, Xerneas) or Steel types that resist Dragon. Building a team without a Fairy or Steel type in ML is very high risk given how many Dragon types appear.'
+      },
+      {
+        title:'Switching Timing & Shield Economy',
+        desc:'Master League has the smallest margin for error in GO PvP. Every switch and shield counts precisely. The general rule: shields are more valuable in the second half of the game when your closer needs to survive. Save your second shield for your Closer, not your Lead. Switch to waste opponent energy when you already know what their charged move is going to target.'
+      }
+    ],
+    threats: [
+      {name:'Zacian',         why:'Best non-Mega Pokémon in GO. Iron Head bait + Play Rough nuke + Close Combat coverage. Only hard counters are Steel/Poison types. Dialga-Origin and Eternatus are the most reliable answers.', types:['Fairy']},
+      {name:'Ho-Oh',          why:'Incinerate generates energy at an alarming rate. Sacred Fire+ at Apex rarity is among the highest DPT charged moves. Virtually every team needs a Rock or Water answer for Ho-Oh.', types:['Fire','Flying']},
+      {name:'Dialga-Origin',  why:'Iron Head + Draco Meteor with Steel/Dragon typing means only one weakness (Fighting). Extremely high bulk. Counter: Fighting types (Machamp, Lucario) or Groudon (Earth Power).', types:['Steel','Dragon']},
+      {name:'Mewtwo',         why:'Psystrike uses Attack stat, bypassing Psychic type resistances. Ice Beam + Shadow Ball make it hard to safely switch into. Counter: Dark types or Ghost types that resist Psystrike.', types:['Psychic']},
+      {name:'Eternatus',      why:'Poison/Dragon only weak to Ground and Psychic. Dynamax Cannon has 100 power and 2-bar. Cross Poison bait is cheap. Only reliable answers are Groudon (Precipice Blades) or Mewtwo.', types:['Poison','Dragon']},
+      {name:'Yveltal',        why:'Oblivion Wing heals Yveltal\'s HP — opponent must OHKO or it regenerates. Dark/Flying typing means only Ice, Rock, Electric, and Fairy are super effective. Counter: Zacian or Xerneas.', types:['Dark','Flying']}
+    ]
+  },
+
+  // ─────────────────────────────────────────────────
+  // Champions format placeholders — user-editable
+  // ─────────────────────────────────────────────────
+  champ6: {
+    lastUpdated: '2025-07-01',
+    usage: [
+      {name:'Incineroar',  usage:68.1, role:'Intimidate / Fake Out — carries over from VGC 2025', types:['Fire','Dark']},
+      {name:'Flutter-Mane',usage:54.3, role:'Flagship special attacker', types:['Ghost','Fairy']},
+      {name:'Rillaboom',   usage:49.7, role:'Grassy Surge + Grassy Glide priority', types:['Grass']},
+      {name:'Gholdengo',   usage:44.2, role:'Good as Gold immune to status moves', types:['Steel','Ghost']},
+      {name:'Urshifu-Rapid',usage:41.8,role:'Protect-bypassing Surging Strikes', types:['Fighting','Water']},
+      {name:'Iron-Hands',  usage:38.5, role:'Belly Drum + Fake Out', types:['Fighting','Electric']}
+    ],
+    items: [
+      {name:'Booster-Energy', usage:24.1},{name:'Focus-Sash', usage:20.3},{name:'Assault-Vest', usage:18.7},
+      {name:'Life-Orb', usage:15.4},{name:'Choice-Scarf', usage:13.9},{name:'Covert-Cloak', usage:11.2}
+    ],
+    moves: [
+      {name:'Protect', usage:74.1},{name:'Fake-Out', usage:56.3},{name:'Tailwind', usage:43.2},
+      {name:'Spore', usage:34.7},{name:'Tera-Blast', usage:29.4},{name:'Follow-Me', usage:25.1}
+    ],
+    teams: [
+      {name:'Standard VGC Carry-Over',mons:['Incineroar','Flutter-Mane','Rillaboom','Amoonguss','Urshifu-Rapid','Gholdengo'],desc:'The VGC 2025 standard core adapted to Champions 6v6. Update as Champions-specific patches alter the meta.'}
+    ],
+    strategies: [
+      {title:'Champions 6v6 Meta', desc:'Champions 6v6 meta is evolving. Update this section weekly as tournament results from Pokémon Champions events become available. Currently mirrors VGC 2025 Regulation H with minor ruleset differences.'}
+    ],
+    threats: [
+      {name:'Flutter-Mane', why:'Carries over from VGC 2025 as the primary restricted threat.', types:['Ghost','Fairy']},
+      {name:'Urshifu-Rapid', why:'Protect bypass remains the defining mechanic of competitive play.', types:['Fighting','Water']}
+    ]
+  },
+
+  champ3: {
+    lastUpdated: '2025-07-01',
+    usage: [
+      {name:'Incineroar',  usage:65.4, role:'Intimidate + Fake Out — essential 3v3 support', types:['Fire','Dark']},
+      {name:'Flutter-Mane',usage:58.7, role:'Primary special sweeper in 3v3', types:['Ghost','Fairy']},
+      {name:'Urshifu-Rapid',usage:52.1,role:'Protect bypass closer', types:['Fighting','Water']},
+      {name:'Amoonguss',   usage:48.3, role:'Spore + redirect under restricted ruleset', types:['Grass','Poison']},
+      {name:'Raging-Bolt', usage:44.6, role:'Thunderclap priority sweeper', types:['Electric','Dragon']},
+      {name:'Iron-Hands',  usage:41.2, role:'Belly Drum wins 1v2 after a successful setup', types:['Fighting','Electric']}
+    ],
+    items: [
+      {name:'Focus-Sash', usage:28.4},{name:'Booster-Energy', usage:24.7},{name:'Choice-Scarf', usage:19.3},
+      {name:'Life-Orb', usage:16.8},{name:'Assault-Vest', usage:14.2},{name:'Covert-Cloak', usage:11.9}
+    ],
+    moves: [
+      {name:'Protect', usage:71.3},{name:'Fake-Out', usage:54.8},{name:'Tera-Blast', usage:41.2},
+      {name:'Spore', usage:37.4},{name:'Tailwind', usage:28.9},{name:'Extreme-Speed', usage:24.3}
+    ],
+    teams: [
+      {name:'Incineroar + Flutter-Mane + Urshifu', mons:['Incineroar','Flutter-Mane','Urshifu-Rapid'], desc:'The 3v3 Champions core. Incineroar Fake Out into Flutter-Mane to sweep, Urshifu closes. Update when Champions 3v3 tournament data is available.'}
+    ],
+    strategies: [
+      {title:'Champions 3v3 Format', desc:'3v3 Champions rewards decisive early leads more than 6v6. Every Pokémon counts with no bench. Fake Out + protect timing on turn 1 is even more critical. Update with tournament data from official Champions 3v3 events.'}
+    ],
+    threats: [
+      {name:'Flutter-Mane', why:'In 3v3, Flutter-Mane has fewer checks available. If opponent has no Steel type, it wins.', types:['Ghost','Fairy']}
+    ]
+  },
+
+  champ4: {
+    lastUpdated: '2025-07-01',
+    usage: [
+      {name:'Incineroar',  usage:67.8, role:'Non-negotiable Intimidate anchor', types:['Fire','Dark']},
+      {name:'Flutter-Mane',usage:55.9, role:'Special sweeper', types:['Ghost','Fairy']},
+      {name:'Amoonguss',   usage:51.4, role:'Spore + redirect utility', types:['Grass','Poison']},
+      {name:'Urshifu-Rapid',usage:47.2,role:'Protect bypass attacker', types:['Fighting','Water']},
+      {name:'Rillaboom',   usage:42.8, role:'Grassy Surge + priority Glide', types:['Grass']},
+      {name:'Gholdengo',   usage:38.1, role:'Status immune Good as Gold', types:['Steel','Ghost']}
+    ],
+    items: [
+      {name:'Booster-Energy', usage:22.8},{name:'Focus-Sash', usage:19.4},{name:'Assault-Vest', usage:17.1},
+      {name:'Life-Orb', usage:14.8},{name:'Choice-Scarf', usage:12.3},{name:'Covert-Cloak', usage:10.7}
+    ],
+    moves: [
+      {name:'Protect', usage:73.4},{name:'Fake-Out', usage:55.7},{name:'Tailwind', usage:39.8},
+      {name:'Spore', usage:33.1},{name:'Follow-Me', usage:27.4},{name:'Tera-Blast', usage:23.9}
+    ],
+    teams: [
+      {name:'Standard 4v4 Core', mons:['Incineroar','Flutter-Mane','Amoonguss','Urshifu-Rapid'], desc:'4v4 Champions core — mirrors VGC lead + back structure. Update as Champions 4v4 events produce results.'}
+    ],
+    strategies: [
+      {title:'Champions 4v4 Structure', desc:'4v4 gives one extra Pokémon vs 3v3, allowing a dedicated lead + back split. Leading with support + attacker pairs while keeping a solid back-line is the recommended approach. Meta will diverge from VGC as Champions develops its own ruleset.'}
+    ],
+    threats: [
+      {name:'Amoonguss', why:'In 4v4, Spore is even more punishing since losing a Pokémon to sleep is a larger % of your team.', types:['Grass','Poison']}
+    ]
+  }
+
+};
+
+function getMetaForFormat(fmt) {
+  return metaData[fmt] || META_DEFAULTS[fmt] || { usage:[], items:[], moves:[], teams:[], strategies:[], threats:[] };
+}
+
+function setMetaFormat(fmt) {
+  currentMetaFormat = fmt;
+  document.querySelectorAll('.meta-format-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase().replace(/[\s\/]/g,'-').includes(fmt.replace('go-','').replace('-','')));
+  });
+  // Simpler: match by onclick
+  document.querySelectorAll('.meta-format-btn').forEach(btn => {
+    const onclick = btn.getAttribute('onclick') || '';
+    btn.classList.toggle('active', onclick.includes(`'${fmt}'`));
+  });
+  renderCurrentMetaTab();
+}
+
+function showMetaTab(tab) {
+  currentMetaTab = tab;
+  document.querySelectorAll('.meta-tab-content').forEach(el => el.style.display = 'none');
+  document.getElementById(`meta-tab-${tab}`).style.display = 'block';
+  document.querySelectorAll('.meta-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase().includes(tab.slice(0,4)));
+  });
+  renderCurrentMetaTab();
+}
+
+function renderCurrentMetaTab() {
+  const d = getMetaForFormat(currentMetaFormat);
+  const el = document.getElementById('meta-last-updated');
+  if (el) el.textContent = `Last updated: ${d.lastUpdated || 'Not yet set'}`;
+
+  if (currentMetaTab === 'usage') renderMetaUsage(d);
+  if (currentMetaTab === 'teams') renderMetaTeams(d);
+  if (currentMetaTab === 'strategies') renderMetaStrategies(d);
+  if (currentMetaTab === 'threats') renderMetaThreats(d);
+}
+
+function rankColor(i) { return i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : ''; }
+
+function renderMetaUsage(d) {
+  const el = document.getElementById('meta-usage-list');
+  if (!el) return;
+  if (!d.usage?.length) { el.innerHTML = '<div style="color:var(--white-dim); font-size:0.85rem;">No usage data yet. Add some in the Manage tab.</div>'; }
+  else {
+    const maxU = Math.max(...d.usage.map(p => p.usage));
+    el.innerHTML = d.usage.map((p,i) => `
+      <div class="meta-rank-row">
+        <div class="meta-rank-num ${rankColor(i)}">${i+1}</div>
+        <div style="flex:1;">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <span style="font-weight:700;">${p.name}</span>
+            ${(p.types||[]).map(t=>`<span class="type-badge" style="background:${typeBg(t)};font-size:0.6rem;padding:1px 6px;">${t}</span>`).join('')}
+            <span style="font-size:0.75rem; color:var(--white-dim); margin-left:auto;">${p.role||''}</span>
+          </div>
+          <div class="meta-usage-bar"><div class="meta-usage-fill" style="width:${(p.usage/maxU)*100}%;"></div></div>
+          <div style="font-size:0.72rem; color:var(--blue-pale); margin-top:2px;">${p.usage}% usage</div>
+        </div>
+      </div>`).join('');
+  }
+  const itemEl = document.getElementById('meta-items-list');
+  const moveEl = document.getElementById('meta-moves-list');
+  if (itemEl) itemEl.innerHTML = (d.items||[]).map((it,i) => `
+    <div class="meta-rank-row">
+      <div class="meta-rank-num ${rankColor(i)}">${i+1}</div>
+      <div style="flex:1;">
+        <span style="font-weight:600;">${it.name}</span>
+        ${it.usage ? `<div style="font-size:0.72rem; color:var(--blue-pale);">${it.usage}% usage</div>` : ''}
+        ${it.note ? `<div style="font-size:0.75rem; color:var(--white-dim); margin-top:2px; font-style:italic;">${it.note}</div>` : ''}
+      </div>
+    </div>`).join('') || '<div style="color:var(--white-dim); font-size:0.85rem;">No data yet.</div>';
+  if (moveEl) moveEl.innerHTML = (d.moves||[]).map((mv,i) => `
+    <div class="meta-rank-row">
+      <div class="meta-rank-num ${rankColor(i)}">${i+1}</div>
+      <div style="flex:1;">
+        <span style="font-weight:600;">${mv.name}</span>
+        ${mv.usage ? `<div style="font-size:0.72rem; color:var(--blue-pale);">${mv.usage}% usage</div>` : ''}
+        ${mv.note ? `<div style="font-size:0.75rem; color:var(--white-dim); margin-top:2px; font-style:italic;">${mv.note}</div>` : ''}
+      </div>
+    </div>`).join('') || '<div style="color:var(--white-dim); font-size:0.85rem;">No data yet.</div>';
+}
+
+function renderMetaTeams(d) {
+  const el = document.getElementById('meta-teams-list');
+  if (!el) return;
+  if (!d.teams?.length) { el.innerHTML = '<div class="alert alert-info"><span>ℹ️</span><span>No teams added yet. Paste team data in the Manage tab.</span></div>'; return; }
+  el.innerHTML = d.teams.map((t,i) => `
+    <div class="meta-card">
+      <div style="display:flex; align-items:flex-start; gap:10px; margin-bottom:12px; flex-wrap:wrap;">
+        <div class="meta-rank-num ${rankColor(i)}" style="font-size:1.5rem; flex-shrink:0;">${i+1}</div>
+        <div style="flex:1;">
+          <div style="font-weight:700; font-size:1.05rem; margin-bottom:4px;">${t.name}</div>
+          ${t.result ? `<span style="font-size:0.72rem; background:rgba(37,99,235,0.15); border:1px solid rgba(96,165,250,0.25); border-radius:4px; padding:2px 8px; color:var(--blue-pale); font-weight:600;">🏆 ${t.result}</span>` : ''}
+        </div>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;">
+        ${(t.mons||[]).map(m=>`<span style="background:rgba(37,99,235,0.15);border:1px solid rgba(96,165,250,0.2);border-radius:6px;padding:3px 10px;font-size:0.82rem;font-weight:600;">${m}</span>`).join('')}
+      </div>
+      <div style="font-size:0.85rem; color:var(--white-dim); line-height:1.7;">${t.desc||''}</div>
+    </div>`).join('');
+}
+
+function renderMetaStrategies(d) {
+  const el = document.getElementById('meta-strategies-list');
+  if (!el) return;
+  if (!d.strategies?.length) { el.innerHTML = '<div class="alert alert-info"><span>ℹ️</span><span>No strategies added yet.</span></div>'; return; }
+  el.innerHTML = d.strategies.map(s => `
+    <div class="meta-strategy-card">
+      <div class="meta-strategy-title">${s.title}</div>
+      <div class="meta-strategy-body">${s.desc}</div>
+    </div>`).join('');
+}
+
+function renderMetaThreats(d) {
+  const el = document.getElementById('meta-threats-list');
+  if (!el) return;
+  if (!d.threats?.length) { el.innerHTML = '<div class="alert alert-info"><span>ℹ️</span><span>No threats listed yet.</span></div>'; return; }
+  el.innerHTML = `<div class="meta-card"><div style="font-size:0.85rem;font-weight:700;color:#f87171;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">Top Threats to Account For</div>` +
+    d.threats.map(t => `
+      <div class="meta-rank-row">
+        <span style="font-size:1.4rem;">⚠️</span>
+        <div style="flex:1;">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:3px;">
+            <span style="font-weight:700; color:#f87171;">${t.name}</span>
+            ${(t.types||[]).map(ty=>`<span class="type-badge" style="background:${typeBg(ty)};font-size:0.6rem;padding:1px 6px;">${ty}</span>`).join('')}
+          </div>
+          <div style="font-size:0.82rem; color:var(--white-dim);">${t.why}</div>
+        </div>
+      </div>`).join('') + '</div>';
+}
+
+function openMetaUpdatePanel() { showMetaTab('manage'); }
+
+function openQuickAddMeta() {
+  const f = document.getElementById('quick-add-meta-form');
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+}
+
+function quickAddMetaPokemon() {
+  const name = document.getElementById('qa-name').value.trim();
+  const usage = parseFloat(document.getElementById('qa-usage').value);
+  const role = document.getElementById('qa-role').value.trim();
+  if (!name || isNaN(usage)) { alert('Please enter a name and usage %.'); return; }
+  if (!metaData[currentMetaFormat]) metaData[currentMetaFormat] = {usage:[],items:[],moves:[],teams:[],strategies:[],threats:[],lastUpdated:''};
+  metaData[currentMetaFormat].usage = metaData[currentMetaFormat].usage || [];
+  metaData[currentMetaFormat].usage.push({name, usage, role});
+  metaData[currentMetaFormat].usage.sort((a,b) => b.usage - a.usage);
+  metaData[currentMetaFormat].lastUpdated = new Date().toISOString().split('T')[0];
+  localStorage.setItem(META_KEY, JSON.stringify(metaData));
+  document.getElementById('qa-name').value = '';
+  document.getElementById('qa-usage').value = '';
+  document.getElementById('qa-role').value = '';
+  alert(`${name} added to ${currentMetaFormat} usage rankings.`);
+}
+
+function importMetaJSON() {
+  const raw = document.getElementById('meta-json-input').value.trim();
+  const fmt = document.getElementById('meta-import-format').value;
+  if (!raw) { alert('Please paste JSON data first.'); return; }
+  try {
+    const parsed = JSON.parse(raw);
+    if (!metaData[fmt]) metaData[fmt] = {};
+    Object.assign(metaData[fmt], parsed);
+    metaData[fmt].lastUpdated = new Date().toISOString().split('T')[0];
+    localStorage.setItem(META_KEY, JSON.stringify(metaData));
+    alert(`Meta data imported for ${fmt}!`);
+    document.getElementById('meta-json-input').value = '';
+    setMetaFormat(fmt);
+  } catch(e) { alert('Invalid JSON: ' + e.message); }
+}
+
+function exportMetaJSON() {
+  const d = getMetaForFormat(currentMetaFormat);
+  const blob = new Blob([JSON.stringify(d, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `pokeforge-meta-${currentMetaFormat}-${Date.now()}.json`;
+  a.click();
+}
+
+function clearMetaData() {
+  if (!confirm(`Clear all meta data for ${currentMetaFormat}?`)) return;
+  delete metaData[currentMetaFormat];
+  localStorage.setItem(META_KEY, JSON.stringify(metaData));
+  renderCurrentMetaTab();
+}
+
+function saveMetaSchedule() {
+  const freq = document.getElementById('meta-update-frequency').value;
+  localStorage.setItem('pokeforge_meta_schedule', freq);
+  alert(`Update schedule set to: ${freq}`);
+}
+
+// showPage already handles 'meta' tab inline above
+
 loadPokemonDB();
 initTeam(6);
 renderSavedTeams();
