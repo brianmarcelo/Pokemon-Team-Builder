@@ -148,9 +148,9 @@
     position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
     color: var(--blue-glow); font-size: 1.1rem; pointer-events: none;
   }
-  #main-search-results.search-results {
+  .search-results, #main-search-results {
     position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 9999 !important;
-    background-color: #0d1222 !important; 
+    background-color: #0d1222 !important;
     background: #0d1222 !important;
     opacity: 1 !important;
     backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
@@ -162,6 +162,8 @@
     align-items: center; gap: 12px; transition: background 0.15s;
     border-bottom: 1px solid rgba(96,165,250,0.1);
     background-color: #0d1222 !important;
+    background: #0d1222 !important;
+    opacity: 1 !important;
   }
   .search-result-item:hover { background: rgba(59,130,246,0.15); }
   .search-result-item .mon-name { font-weight: 600; }
@@ -2199,7 +2201,7 @@ function renderDexPage(grid) {
   slice.forEach(p => {
     const card = document.createElement('div');
     card.className = 'card';
-    card.style.cssText = 'cursor:pointer; transition:all 0.2s; padding:14px;';
+    card.style.cssText = 'cursor:pointer; transition:all 0.2s; padding:14px; background: #0d1222;';
     card.onmouseenter = () => { card.style.transform='translateY(-2px)'; card.style.borderColor='rgba(96,165,250,0.5)'; };
     card.onmouseleave = () => { card.style.transform=''; card.style.borderColor=''; };
     card.onclick = () => showDexModal(p.id);
@@ -3060,13 +3062,15 @@ function doSearch(query) {
       const bestLvl = findBestGoLevel(goStats.attack, goStats.defense, goStats.stamina, 10, 10, 10, cpCap);
       const cp = calcGoCP(goStats.attack, goStats.defense, goStats.stamina, 10, 10, 10, bestLvl);
       return `
-        <div class="search-result-item" onclick="addPokemonToTeam(${p.id})">
+        <div class="search-result-item" style="background:#0d1222 !important; opacity:1 !important;" onclick="addPokemonToTeam(${p.id})">
           <div style="width:28px;height:28px;background:rgba(34,197,94,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:#86efac;font-weight:700;flex-shrink:0;">#${p.id}</div>
           <div class="mon-name">${p.name}</div>
           <div class="mon-types">${p.types.map(t=>`<span class="type-badge" style="background:${typeBg(t)};font-size:0.62rem;padding:2px 6px;">${t}</span>`).join('')}</div>
           <div style="margin-left:auto;font-size:0.72rem;color:#fbbf24;font-weight:700;">${cp.toLocaleString()} CP</div>
         </div>`;
     }).join('');
+    results.style.backgroundColor = '#0d1222';
+    results.style.opacity = '1';
     results.style.display = 'block';
     return;
   }
@@ -3092,12 +3096,13 @@ function doSearch(query) {
     results.style.display = 'block'; return;
   }
   results.innerHTML = filtered.map(p => `
-    <div class="search-result-item" onclick="addPokemonToTeam(${p.id})">
-      <div style="width:28px;height:28px;background:rgba(37,99,235,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:var(--blue-pale);font-weight:700;flex-shrink:0;">#${p.id}</div>
+    <div class="search-result-item" style="background:#0d1222 !important;" onclick="addPokemonToTeam(${p.id})">
+      <div style="width:28px;height:28px;background:#1e293b;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:var(--blue-pale);font-weight:700;flex-shrink:0;">#${p.id}</div>
       <div class="mon-name">${p.name}</div>
       <div class="mon-types">${p.types.map(t=>`<span class="type-badge" style="background:${typeBg(t)};font-size:0.62rem;padding:2px 6px;">${t}</span>`).join('')}</div>
-      <div style="margin-left:auto;font-size:0.72rem;color:var(--blue-pale);">Gen ${p.gen}</div>
+      <div style="margin-left:auto;font-size:0.72rem;color:var(--white-dim);">Gen ${p.gen}</div>
     </div>`).join('');
+  results.style.backgroundColor = '#0d1222';
   results.style.display = 'block';
 }
 
