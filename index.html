@@ -149,9 +149,10 @@
     color: var(--blue-glow); font-size: 1.1rem; pointer-events: none;
   }
   .search-results {
-    position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 200;
-    background: #0d1f3c; border: var(--border-glow); border-radius: var(--radius);
-    max-height: 300px; overflow-y: auto; box-shadow: var(--shadow-card);
+    position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 2000;
+    background-color: #0d1222 !important; opacity: 1 !important;
+    border: 1px solid var(--blue-glow); border-radius: var(--radius);
+    max-height: 450px; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.9);
   }
   .search-result-item {
     padding: 10px 16px; cursor: pointer; display: flex;
@@ -2157,7 +2158,7 @@ function renderRolesOverview(filled) {
 // ============================================================
 
 let dexPage = 0;
-const DEX_PAGE_SIZE = 60;
+const DEX_PAGE_SIZE = 100;
 let filteredDexList = [];
 
 function renderDex() {
@@ -3043,7 +3044,7 @@ function doSearch(query) {
       if (typeFilter && !p.types.includes(typeFilter)) return false;
       if (q) return p.name.toLowerCase().includes(q) || p.id.toString() === q;
       return true;
-    }).slice(0, 20);
+    }).slice(0, 1025); // Show all results even for large queries
 
     if (!filtered.length) {
       results.innerHTML = `<div class="search-result-item"><div class="spinner"></div><div>No GO-available Pokémon found</div></div>`;
@@ -3076,7 +3077,7 @@ function doSearch(query) {
     if (typeFilter && !p.types.includes(typeFilter)) return false;
     if (q) return p.name.toLowerCase().includes(q) || p.id.toString() === q || p.id.toString().padStart(3,'0') === q;
     return true;
-  }).slice(0, 20);
+  }).slice(0, 1025); // Show all results for the entire database if needed
 
   if (!filtered.length && !dbLoaded) {
     results.innerHTML = `<div class="search-result-item"><div class="spinner"></div><div>Loading Pokémon database...</div></div>`;
