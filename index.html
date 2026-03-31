@@ -134,7 +134,7 @@
   }
 
   /* POKEMON SEARCH */
-  .search-container { position: relative; }
+  .search-container { position: relative; z-index: 3000; }
   .search-input {
     width: 100%; padding: 12px 16px 12px 44px;
     background: rgba(10,22,40,0.8); border: var(--border-glow);
@@ -148,21 +148,30 @@
     position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
     color: var(--blue-glow); font-size: 1.1rem; pointer-events: none;
   }
-  .search-results, #main-search-results {
+  #main-search-results.search-results {
     position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 9999 !important;
-    background-color: #0d1222 !important;
-    background: #0d1222 !important;
+    background-color: #0d1726 !important;
+    background: #0d1726 !important;
     opacity: 1 !important;
     backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
     border: 1px solid var(--blue-glow); border-radius: var(--radius);
-    max-height: 450px; overflow-y: auto; box-shadow: 0 10px 60px rgba(0,0,0,1) !important;
+    max-height: 450px; overflow-y: auto; box-shadow: 0 10px 80px rgba(0,0,0,1) !important;
+    display: block;
+  }
+  #pokemon-search-card {
+    position: relative;
+    z-index: 5000 !important;
+  }
+  .team-grid-6, #team-grid {
+    position: relative;
+    z-index: 1;
   }
   .search-result-item {
     padding: 10px 16px; cursor: pointer; display: flex;
     align-items: center; gap: 12px; transition: background 0.15s;
     border-bottom: 1px solid rgba(96,165,250,0.1);
-    background-color: #0d1222 !important;
-    background: #0d1222 !important;
+    background-color: #0d1726 !important;
+    background: #0d1726 !important;
     opacity: 1 !important;
   }
   .search-result-item:hover { background: rgba(59,130,246,0.15); }
@@ -811,7 +820,7 @@
         </div>
 
         <!-- Pokemon Search for adding -->
-        <div class="card">
+        <div class="card" id="pokemon-search-card">
           <div class="form-label" style="margin-bottom:8px;">🔍 Add Pokémon to Team</div>
           <div class="search-container">
             <span class="search-icon">🔍</span>
@@ -3629,7 +3638,13 @@ const META_DEFAULTS = {
       {name:'Dewgong',        usage:28.3, role:'Ice Shard + Icy Wind — great in open formats', types:['Water','Ice']},
       {name:'Stunfisk',       usage:27.1, role:'Mud Shot core — good cheap Ground/Electric option', types:['Ground','Electric']},
       {name:'Obstagoon',      usage:26.8, role:'Counter + Night Slash + Cross Chop', types:['Dark','Normal']},
-      {name:'Annihilape',     usage:25.4, role:'Counter + Night Slash + Close Combat', types:['Fighting','Ghost']}
+      {name:'Annihilape',     usage:25.4, role:'Counter + Night Slash + Close Combat', types:['Fighting','Ghost']},
+      {name:'Clodsire',        usage:24.1, role:'Poison Jab + Earthquake — extreme bulk', types:['Poison','Ground']},
+      {name:'Quagsire',        usage:22.8, role:'Mud Shot + Aqua Tail + Stone Edge', types:['Water','Ground']},
+      {name:'Mantine',         usage:21.4, role:'Wing Attack + Aerial Ace + Ice Beam', types:['Water','Flying']},
+      {name:'Gligar',          usage:20.1, role:'Wing Attack + Aerial Ace + Dig utility', types:['Ground','Flying']},
+      {name:'Bastiodon',       usage:18.7, role:'Smack Down — pure specialized bulk', types:['Rock','Steel']},
+      {name:'Whiscash',        usage:17.4, role:'Mud Shot + Mud Bomb + Blizzard spam', types:['Water','Ground']}
     ],
     items: [],
     moves: [
@@ -3726,7 +3741,16 @@ const META_DEFAULTS = {
       {name:'Empoleon',       usage:23.4, role:'Waterfall + Hydro Cannon + Flash Cannon', types:['Water','Steel']},
       {name:'Articuno',       usage:22.7, role:'Ice Shard + Icy Wind + Ancient Power', types:['Ice','Flying']},
       {name:'Charizard',      usage:21.3, role:'Fire Spin + Blast Burn + Dragon Claw', types:['Fire','Flying']},
-      {name:'Machamp',        usage:20.1, role:'Counter + Cross Chop + Rock Slide', types:['Fighting']}
+      {name:'Machamp',        usage:20.1, role:'Counter + Cross Chop + Rock Slide', types:['Fighting']},
+      {name:'Virizion',       usage:18.9, role:'Double Kick + Sacred Sword + Leaf Blade', types:['Grass','Fighting']},
+      {name:'Cobalion',       usage:17.4, role:'Double Kick + Sacred Sword + Stone Edge', types:['Steel','Fighting']},
+      {name:'Gliscor',        usage:16.1, role:'Wing Attack + Night Slash + Earthquake', types:['Ground','Flying']},
+      {name:'Mandibuzz',      usage:15.2, role:'Snarl + Dark Pulse + Aerial Ace — bulk', types:['Dark','Flying']},
+      {name:'Guzzlord',       usage:13.8, role:'Dragon Tail + Brutal Swing + Dragon Claw', types:['Dark','Dragon']},
+      {name:'Skeledirge',     usage:12.4, role:'Incinerate + Shadow Ball + Disarming Voice', types:['Fire','Ghost']},
+      {name:'Walrein',        usage:11.7, role:'Powder Snow + Icicle Spear + Earthquake', types:['Ice','Water']},
+      {name:'Gyarados',       usage:10.9, role:'Dragon Breath + Aqua Tail + Crunch', types:['Water','Flying']},
+      {name:'Steelix',        usage:9.8,  role:'Dragon Tail + Psychic Fangs + Earthquake', types:['Steel','Ground']}
     ],
     items: [],
     moves: [
@@ -3819,7 +3843,15 @@ const META_DEFAULTS = {
       {name:'Necrozma-DW',     usage:26.1, role:'Shadow Claw + Shadow Ball + Moongeist Beam', types:['Psychic','Ghost']},
       {name:'Reshiram',        usage:24.7, role:'Fire Fang + Overheat + Draco Meteor', types:['Dragon','Fire']},
       {name:'Garchomp',        usage:22.4, role:'Dragon Tail + Outrage + Earth Power — non-legendary option', types:['Dragon','Ground']},
-      {name:'Dragonite',       usage:20.8, role:'Dragon Breath + Draco Meteor + Hurricane — accessible', types:['Dragon','Flying']}
+      {name:'Dragonite',       usage:20.8, role:'Dragon Breath + Draco Meteor + Hurricane — accessible', types:['Dragon','Flying']},
+      {name:'Solgaleo',        usage:19.4, role:'Psychic Fangs + Iron Head — top Steel/Psychic', types:['Psychic','Steel']},
+      {name:'Landorus-Therian', usage:18.2, role:'Mud Shot + Sandsear Storm + Stone Edge', types:['Ground','Flying']},
+      {name:'Groudon',         usage:17.9, role:'Mud Shot + Precipice Blades + Fire Punch', types:['Ground']},
+      {name:'Kyogre',          usage:16.5, role:'Waterfall + Origin Pulse + Blizzard', types:['Water']},
+      {name:'Meloetta-Aria',   usage:15.1, role:'Quick Attack + Psyshock + Dazzling Gleam', types:['Normal','Psychic']},
+      {name:'Giratina-Altered',usage:13.7, role:'Dragon Breath + Dragon Claw + Shadow Force', types:['Ghost','Dragon']},
+      {name:'Metagross',       usage:12.4, role:'Bullet Punch + Meteor Mash + Earthquake', types:['Steel','Psychic']},
+      {name:'Excadrill',       usage:11.2, role:'Mud Shot + Drill Run + Rock Slide', types:['Ground','Steel']}
     ],
     items: [],
     moves: [
@@ -3906,7 +3938,9 @@ const META_DEFAULTS = {
     ],
     items: [
       {name:'Booster-Energy', usage:24.1},{name:'Focus-Sash', usage:20.3},{name:'Assault-Vest', usage:18.7},
-      {name:'Life-Orb', usage:15.4},{name:'Choice-Scarf', usage:13.9},{name:'Covert-Cloak', usage:11.2}
+      {name:'Life-Orb', usage:15.4},{name:'Choice-Scarf', usage:13.9},{name:'Covert-Cloak', usage:11.2},
+      {name:'Leftovers', usage:9.8},{name:'Choice-Specs', usage:8.4},{name:'Choice-Band', usage:7.9},
+      {name:'Rocky-Helmet', usage:6.5},{name:'Heavy-Duty-Boots', usage:5.2},{name:'Mental-Herb', usage:4.7}
     ],
     moves: [
       {name:'Protect', usage:74.1},{name:'Fake-Out', usage:56.3},{name:'Tailwind', usage:43.2},
@@ -3936,7 +3970,8 @@ const META_DEFAULTS = {
     ],
     items: [
       {name:'Focus-Sash', usage:28.4},{name:'Booster-Energy', usage:24.7},{name:'Choice-Scarf', usage:19.3},
-      {name:'Life-Orb', usage:16.8},{name:'Assault-Vest', usage:14.2},{name:'Covert-Cloak', usage:11.9}
+      {name:'Life-Orb', usage:16.8},{name:'Assault-Vest', usage:14.2},{name:'Covert-Cloak', usage:11.9},
+      {name:'Rocky-Helmet', usage:10.1},{name:'Mental-Herb', usage:8.5},{name:'Safety-Goggles', usage:7.2}
     ],
     moves: [
       {name:'Protect', usage:71.3},{name:'Fake-Out', usage:54.8},{name:'Tera-Blast', usage:41.2},
@@ -3965,7 +4000,9 @@ const META_DEFAULTS = {
     ],
     items: [
       {name:'Booster-Energy', usage:22.8},{name:'Focus-Sash', usage:19.4},{name:'Assault-Vest', usage:17.1},
-      {name:'Life-Orb', usage:14.8},{name:'Choice-Scarf', usage:12.3},{name:'Covert-Cloak', usage:10.7}
+      {name:'Life-Orb', usage:14.8},{name:'Choice-Scarf', usage:12.3},{name:'Covert-Cloak', usage:10.7},
+      {name:'Rocky-Helmet', usage:9.4},{name:'Mental-Herb', usage:8.1},{name:'Choice-Specs', usage:7.5},
+      {name:'Choice-Band', usage:6.8},{name:'Heavy-Duty-Boots', usage:5.9},{name:'Safety-Goggles', usage:4.2}
     ],
     moves: [
       {name:'Protect', usage:73.4},{name:'Fake-Out', usage:55.7},{name:'Tailwind', usage:39.8},
